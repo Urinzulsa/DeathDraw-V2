@@ -13,7 +13,8 @@ public class Revolver {
         giro = (int) (Math.random() * 6);
         if (recamara[giro])  {
             aux = true;
-            recamara[giro] = false;
+            // NO quitar la bala - se mantiene para que siempre haya al menos 1
+            // recamara[giro] = false;  // COMENTADO: no se quita la bala
         }
         return aux;
     }
@@ -59,5 +60,13 @@ public class Revolver {
             System.out.print(recamara[i] ? "💣 " : "⬜ ");
         }
         System.out.println();
+    }
+
+    public int contarBalas() {
+        int count = 0;
+        for (boolean bala : recamara) {
+            if (bala) count++;
+        }
+        return count;
     }
 }

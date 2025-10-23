@@ -6,11 +6,17 @@ public class Jugador{
     private final int vidasMaximas;
     private Revolver revolver;
 
-    public Jugador(String nombre, Revolver revolver) {
+    // Constructor con vidas configurables según el modo de juego
+    public Jugador(String nombre, Revolver revolver, int vidasMaximas) {
         this.nombre = nombre;
-        this.vidasMaximas = 3; // Podría ser 3 o 5 dependiendo del modo de juego
+        this.vidasMaximas = vidasMaximas;
         this.vidas = vidasMaximas;
         this.revolver = revolver;
+    }
+
+    // Constructor por defecto (modo clásico: 3 vidas)
+    public Jugador(String nombre, Revolver revolver) {
+        this(nombre, revolver, 3);
     }
 
     public String getNombre() {
