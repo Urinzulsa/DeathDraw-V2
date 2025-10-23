@@ -75,8 +75,14 @@ public class Partida {
 
 
     public String iniciarPartida() throws PartidaIniciadaException {
-        if (jugador1 == null || jugador2 == null) {
-            throw new IllegalArgumentException("EL JUGADOR SE ENCUENTRA VACIO");
+        if (!modoJuego.equals(ModoJuego.SOLO)) {
+            if (jugador1 == null || jugador2 == null) {
+                throw new IllegalArgumentException("EL JUGADOR SE ENCUENTRA VACIO");
+            }
+        } else {
+            if (jugador1 == null) {
+                throw new IllegalArgumentException("EL JUGADOR SE ENCUENTRA VACIO");
+            }
         }
         if (estado != Estado.NO_INICIADO) {
             throw new PartidaIniciadaException();
@@ -84,9 +90,15 @@ public class Partida {
         this.estado = Estado.EN_CURSO;
         this.mazo = Mazo.crearMazoEstandar(modoJuego.getProbabilidadEspeciales());
         this.cartaActual = mazo.robarCarta();
-        return "La partida ha comenzado en " + modoJuego + "\n" + 
-               jugador1.getNombre() + " y " + jugador2.getNombre() + 
-               "\nLA PRIMER CARTA DEL MAZO ES: " + cartaActual;
+        if (!modoJuego.equals(ModoJuego.SOLO)) {
+            return "La partida ha comenzado en " + modoJuego + "\n" +
+                    jugador1.getNombre() + " y " + jugador2.getNombre() +
+                    "\nLA PRIMER CARTA DEL MAZO ES: " + cartaActual;
+        } else {
+            return "La partida ha comenzado en " + modoJuego + "\n" +
+                    jugador1.getNombre() +
+                    "\nLA PRIMER CARTA DEL MAZO ES: " + cartaActual;
+        }
     }
 
     // El jugador pasa su apuesta (MAYOR, MENOR o IGUAL) para la carta que se roba del mazo
@@ -118,15 +130,15 @@ public class Partida {
             } else {
                 System.out.println("Pasa el siguiente jugador.");
             }
-            if (modoJuego.equals(ModoJuego.SOLO)){
+            if (modoJuego.equals(ModoJuego.SOLO)) {
                 System.out.println("Excelente, continua jugando");
             }
         } else {
             System.out.println("❌ ERROR! Se acciona el revolver...");
             boolean bala = jugador.getRevolver().girarYDisparar();
             if (modoJuego.equals(ModoJuego.SOLO)) {
-                System.out.println( jugador.getNombre() +" recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
-                this.estado=Estado.FINALIZADO;
+                System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
+                this.estado = Estado.FINALIZADO;
                 return;
             }
             if (bala) {
@@ -161,8 +173,10 @@ public class Partida {
         System.out.println("\n" + resultadoEfecto);
 
         // Comprobar si el efecto finalizó la partida
+        if(!modoJuego.equals(ModoJuego.SOLO)){
         if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
             estado = Estado.FINALIZADO;
+        }
         }
     }
 
@@ -178,7 +192,7 @@ public class Partida {
         while (!estado.equals(Estado.FINALIZADO)) {
             Jugador actual;
             if (modoJuego.equals(ModoJuego.SOLO)) {
-                actual=jugador1;
+                actual = jugador1;
             } else if (turnosContador % 2 == 0) {
                 actual = jugador2;
             } else {
@@ -197,6 +211,11 @@ public class Partida {
                     System.out.println("PARTIDA FINALIZADA. Ganador: " + ganador.getNombre());
                 }
                 turnosContador++;
+            } else {
+                if (estado.equals(Estado.FINALIZADO)) {
+                    System.out.println("PARTIDA FINALIZADA. Puntaje final: ");
+                    return;
+                }
             }
 
             // Separación visual
@@ -204,12 +223,19 @@ public class Partida {
         }
 
         if (modoJuego.equals(ModoJuego.SOLO)) {
-            System.out.println("PARTIDA FINALIZADA. Puntaje final: "); /// A ARREGLAR;
+            /// A ARREGLAR;
 
 
+        }
 
     }
 
-}
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
 }
 
