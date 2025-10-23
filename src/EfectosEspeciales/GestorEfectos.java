@@ -44,7 +44,7 @@ public class GestorEfectos {
             case VIDA_EXTRA -> "Positivo: gana una vida, Negativo: pierde una vida";
             case DOBLE_TURNO -> "Positivo: el rival juega 2 turnos, Negativo: tú juegas 2 turnos";
             case VAMPIRO -> "Positivo: robas una vida, Negativo: pierdes una vida";
-            case DESARMAR -> "Positivo: descartas una bala, Negativo: agregas una bala";
+            case DESARMAR -> "Positivo: descartas una bala de tu revólver, Negativo: el oponente descarta una bala de su revólver";
             case SABOTAJE -> "Intercambia los revólveres (neutral)";
             case BALA_LOCA -> "Positivo: rival gana bala, Negativo: tú ganas bala";
             case CAOS -> "Cambia aleatoriamente las balas de ambos revólveres (neutral)";

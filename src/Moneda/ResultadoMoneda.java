@@ -24,7 +24,7 @@ public class ResultadoMoneda {
     }
 
     public String obtenerRepresentacion() {
-        String estadoTexto = acierto ? "ACERTO" : "FALLO";
+        String estadoTexto = acierto ? "✅ ACERTO" : "❌ FALLO";
 
         return String.format("Eligio %s - Salio %s - %s",
                 eleccion, resultado, estadoTexto);

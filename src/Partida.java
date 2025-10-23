@@ -3,6 +3,7 @@ import Jugador.Revolver;
 import Carta.Mazo;
 import Carta.Carta;
 import EfectosEspeciales.GestorEfectos;
+import Moneda.Moneda;
 import Moneda.Lado;
 
 import java.util.Scanner;
@@ -105,20 +106,15 @@ public class Partida {
             acerto = true;
         } else if (nueva.esMenorQue(cartaActual) && apuesta == TipoApuesta.MENOR) {
             acerto = true;
-        } else if (!nueva.esMayorQue(cartaActual) && !nueva.esMenorQue(cartaActual) && apuesta == TipoApuesta.IGUAL) {
-            acerto = true;
         }
-
         // La nueva carta siempre queda como carta actual después de revelar
         this.cartaActual = nueva;
 
         if (acerto) {
             System.out.println("✅ ACIERTO! ");
-            
-            // Verificar si la carta tiene efecto especial
+
             if (nueva.tieneEfecto()) {
-                System.out.println("\n🌟 ¡CARTA ESPECIAL! Efecto: " + nueva.getEfecto().getTipoEfecto());
-                aplicarEfectoEspecial(jugador, nueva);
+                manejarEfectoDeCarta(nueva, jugador);
             } else {
                 System.out.println("Pasa el siguiente jugador.");
             }
@@ -136,42 +132,30 @@ public class Partida {
         }
     }
 
-    // Método para aplicar efectos especiales cuando se acierta
-    private void aplicarEfectoEspecial(Jugador jugadorQueAcerto, Carta carta) {
-        // Determinar el otro jugador
-        Jugador otroJugador = (jugadorQueAcerto == jugador1) ? jugador2 : jugador1;
-        
-        // Solicitar elección de moneda al jugador
-        Lado eleccionMoneda = solicitarEleccionMoneda(jugadorQueAcerto);
-        
-        // Aplicar el efecto
-        String resultado = GestorEfectos.aplicarEfectoDeCarta(carta, jugadorQueAcerto, otroJugador, eleccionMoneda);
-        System.out.println(resultado);
-    }
+    private void manejarEfectoDeCarta(Carta carta, Jugador jugador) {
+        System.out.println("\n" + "🌟".repeat(60));
+        System.out.println("¡CARTA ESPECIAL! Efecto: " + carta.getEfecto().getTipoEfecto());
+        String descripcion = GestorEfectos.obtenerDescripcionEfecto(carta.getEfecto().getTipoEfecto());
+        System.out.println("Descripción: " + descripcion);
 
-    // Método para solicitar al jugador que elija CARA o CRUZ
-    private Lado solicitarEleccionMoneda(Jugador jugador) {
-        System.out.println("\n🪙 " + jugador.getNombre() + ", elige CARA o CRUZ:");
-        System.out.println("1. CARA");
-        System.out.println("2. CRUZ");
-        
-        int opcion = 0;
-        while (opcion < 1 || opcion > 2) {
-            System.out.print("Tu elección (1-2): ");
-            try {
-                String input = scanner.nextLine().trim();
-                if (!input.isEmpty()) {
-                    opcion = Integer.parseInt(input);
-                    if (opcion < 1 || opcion > 2) {
-                        System.out.println("❌ Opción inválida. Elige 1 o 2.");
-                    }
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Por favor ingresa un número válido.");
-            }
+        Jugador oponente = (jugador == jugador1) ? jugador2 : jugador1;
+        String resultadoEfecto;
+
+        // Comprobar si el efecto es neutral ANTES de pedir la moneda
+        if (carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.SABOTAJE || carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.CAOS) {
+            System.out.println("🌟".repeat(60));
+            resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, null);
+        } else {
+            System.out.println("🌟".repeat(60));
+            Lado eleccionMoneda = Moneda.solicitarEleccion(jugador, scanner);
+            resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, eleccionMoneda);
         }
-        
-        return opcion == 1 ? Lado.CARA : Lado.CRUZ;
+        System.out.println("\n" + resultadoEfecto);
+
+        // Comprobar si el efecto finalizó la partida
+        if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
+            estado = Estado.FINALIZADO;
+        }
     }
 
     // Ejecuta turnos alternados hasta que alguno pierda todas sus vidas
@@ -192,7 +176,7 @@ public class Partida {
             }
 
             // Elegir apuesta de forma aleatoria entre MAYOR y MENOR (se puede incluir IGUAL si se desea)
-            TipoApuesta[] opciones = {TipoApuesta.MAYOR, TipoApuesta.MENOR, TipoApuesta.IGUAL};
+            TipoApuesta[] opciones = {TipoApuesta.MAYOR, TipoApuesta.MENOR};
             TipoApuesta apuesta = opciones[(int) (Math.random() * opciones.length)];
 
             Apuesta(actual, apuesta);

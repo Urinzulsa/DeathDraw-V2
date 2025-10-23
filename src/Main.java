@@ -160,15 +160,14 @@ public class Main {
         System.out.println(jugador.getNombre() + ", ¿qué apuestas?");
         System.out.println("1. > MAYOR - La siguiente carta será MAYOR");
         System.out.println("2. < MENOR - La siguiente carta será MENOR");
-        System.out.println("3. = IGUAL - La siguiente carta será IGUAL");
         
         int opcion = 0;
-        while (opcion < 1 || opcion > 3) {
-            System.out.print("\nTu apuesta (1-3): ");
+        while (opcion < 1 || opcion > 2) {
+            System.out.print("\nTu apuesta (1-2): ");
             try {
                 opcion = Integer.parseInt(scanner.nextLine().trim());
                 if (opcion < 1 || opcion > 3) {
-                    System.out.println("Opción inválida. Elige entre 1 y 3.");
+                    System.out.println("Opción inválida. Elige entre 1 y 2.");
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Por favor ingresa un número válido.");
@@ -178,7 +177,6 @@ public class Main {
         return switch (opcion) {
             case 1 -> TipoApuesta.MAYOR;
             case 2 -> TipoApuesta.MENOR;
-            case 3 -> TipoApuesta.IGUAL;
             default -> TipoApuesta.MAYOR;
         };
     }
