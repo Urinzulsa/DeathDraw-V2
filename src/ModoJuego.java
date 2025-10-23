@@ -1,7 +1,8 @@
 public enum ModoJuego {
     CLASICO(3, 1, 0.15),
     SOBRECARGA(5, 2, 0.20),
-    MUERTE_SUBITA(1, 6, 0.05);
+    MUERTE_SUBITA(1, 6, 0.05),
+    SOLO(1,1,0.15);
 
     private final int vidasIniciales;
     private final int balasIniciales;
@@ -31,6 +32,7 @@ public enum ModoJuego {
             case CLASICO -> "Modo Clásico (3 vidas, 1 bala, 15% especiales)";
             case SOBRECARGA -> "Modo Sobrecarga (5 vidas, 2 balas, 20% especiales)";
             case MUERTE_SUBITA -> "Modo Muerte Súbita (1 vida, 6 balas, 5% especiales)";
+            case SOLO -> "Modo Solo (Una sola chance, si pierde termina el juego)";
         };
     }
 }

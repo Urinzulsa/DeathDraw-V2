@@ -118,9 +118,17 @@ public class Partida {
             } else {
                 System.out.println("Pasa el siguiente jugador.");
             }
+            if (modoJuego.equals(ModoJuego.SOLO)){
+                System.out.println("Excelente, continua jugando");
+            }
         } else {
             System.out.println("❌ ERROR! Se acciona el revolver...");
             boolean bala = jugador.getRevolver().girarYDisparar();
+            if (modoJuego.equals(ModoJuego.SOLO)) {
+                System.out.println( jugador.getNombre() +" recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
+                this.estado=Estado.FINALIZADO;
+                return;
+            }
             if (bala) {
                 jugador.perderVida();
                 System.out.println("💥 " + jugador.getNombre() + " recibe un impacto y pierde 1 vida. Vidas restantes: " + jugador.getVidas());
@@ -167,9 +175,11 @@ public class Partida {
             throw new IllegalStateException("La partida no está en curso");
         }
 
-        while (jugador1.getVidas() > 0 && jugador2.getVidas() > 0) {
+        while (!estado.equals(Estado.FINALIZADO)) {
             Jugador actual;
-            if (turnosContador % 2 == 0) {
+            if (modoJuego.equals(ModoJuego.SOLO)) {
+                actual=jugador1;
+            } else if (turnosContador % 2 == 0) {
                 actual = jugador2;
             } else {
                 actual = jugador1;
@@ -180,16 +190,26 @@ public class Partida {
             TipoApuesta apuesta = opciones[(int) (Math.random() * opciones.length)];
 
             Apuesta(actual, apuesta);
+            if (!modoJuego.equals(ModoJuego.SOLO)) {
+                if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
+                    estado = Estado.FINALIZADO;
+                    Jugador ganador = jugador1.getVidas() > 0 ? jugador1 : jugador2;
+                    System.out.println("PARTIDA FINALIZADA. Ganador: " + ganador.getNombre());
+                }
+                turnosContador++;
+            }
 
-            turnosContador++;
-
-            // Breve separación visual en la consola
+            // Separación visual
             System.out.println("---");
         }
 
-        estado = Estado.FINALIZADO;
-        Jugador ganador = jugador1.getVidas() > 0 ? jugador1 : jugador2;
-        System.out.println("PARTIDA FINALIZADA. Ganador: " + ganador.getNombre());
+        if (modoJuego.equals(ModoJuego.SOLO)) {
+            System.out.println("PARTIDA FINALIZADA. Puntaje final: "); /// A ARREGLAR;
+
+
+
     }
 
 }
+}
+

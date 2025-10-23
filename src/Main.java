@@ -79,6 +79,7 @@ public class Main {
             case 1 -> ModoJuego.CLASICO;
             case 2 -> ModoJuego.SOBRECARGA;
             case 3 -> ModoJuego.MUERTE_SUBITA;
+            case 4 -> ModoJuego.SOLO;
             default -> ModoJuego.CLASICO;
         };
         
