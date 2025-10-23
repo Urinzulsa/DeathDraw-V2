@@ -14,6 +14,8 @@ public class Main {
         try {
             String resultado = partida.iniciarPartida();
             System.out.println(resultado);
+            // Start the automated turn loop
+            partida.turno();
         } catch (Exception e) {
             System.err.println("Error al iniciar la partida: " + e.getMessage());
         }
