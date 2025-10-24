@@ -136,18 +136,20 @@ public class Partida {
         } else {
             System.out.println("❌ ERROR! Se acciona el revolver...");
             boolean bala = jugador.getRevolver().girarYDisparar();
-            if (modoJuego.equals(ModoJuego.SOLO)) {
-                System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
-                this.estado = Estado.FINALIZADO;
-                return;
-            }
+
             if (bala) {
+                if (modoJuego.equals(ModoJuego.SOLO)) {
+                    System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
+                    this.estado = Estado.FINALIZADO;
+                    return;
+                }
                 jugador.perderVida();
+                jugador.getRevolver().setBalas(1);
                 System.out.println("💥 " + jugador.getNombre() + " recibe un impacto y pierde 1 vida. Vidas restantes: " + jugador.getVidas());
             } else {
                 // No había bala: se agrega una al revólver del jugador
-                boolean cargada = jugador.getRevolver().cargarBala();
-                System.out.println("🍀 " + jugador.getNombre() + " no recibió impacto. Se agrega una bala al revólver: " + (cargada ? "OK" : "REVOLVER LLENO"));
+                jugador.getRevolver().cargarBala();
+                System.out.println("🍀 " + jugador.getNombre() + " no recibió impacto. Se agrega una bala al revólver, apreta bien el chupete ");
             }
         }
     }
