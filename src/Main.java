@@ -23,7 +23,7 @@ public class Main {
             try {
                 System.out.println(partida.agregarJugador(nombresJugadores[0]));
             } catch (Exception e) {
-                System.err.println("Error al agregar jugadores: " + e.getMessage());
+                System.err.println("Error al agregar jugador: " + e.getMessage());
                 return;
             }
         }
@@ -72,7 +72,7 @@ public class Main {
         System.out.println("4.  MODO SOLO");
         System.out.println("   - Vidas: 1 ");
         System.out.println("   - Balas iniciales: 1 (SI PIERDE EL JUEGO TERMINA)");
-        System.out.println("   - Cartas especiales: 15%");
+        System.out.println("   - Cartas especiales: 0%");
         System.out.println();
 
         int opcion = 0;
@@ -119,6 +119,7 @@ public class Main {
             }
             return new String[]{jugador1, jugador2};
         }
+
         return new String[]{jugador1};
 
     }
@@ -135,7 +136,7 @@ public class Main {
                 System.out.println("\n" + "=".repeat(60));
                 System.out.println("TURNO DE: " + jugadorActual.getNombre().toUpperCase());
                 System.out.println("=".repeat(60));
-                mostrarEstadoJuego(jugador1, jugador2, partida);
+                mostrarEstadoJuego(jugador1, jugador2, partida, 0);
 
                 TipoApuesta apuesta = solicitarApuesta(jugadorActual);
                 partida.Apuesta(jugadorActual, apuesta);
@@ -145,23 +146,25 @@ public class Main {
                 System.out.println("\nPresiona ENTER para continuar...");
                 scanner.nextLine();
 
-                System.out.println("\n" + "🏆".repeat(30));
-                Jugador.Jugador ganador = jugador1.getVidas() > 0 ? jugador1 : jugador2;
-                System.out.println("      ¡PARTIDA FINALIZADA!");
-                System.out.println("      GANADOR: " + ganador.getNombre().toUpperCase());
-                System.out.println("🏆".repeat(30) + "\n");
             }
+            System.out.println("\n" + "🏆".repeat(30));
+            Jugador.Jugador ganador = jugador1.getVidas() > 0 ? jugador1 : jugador2;
+            System.out.println("      ¡PARTIDA FINALIZADA!");
+            System.out.println("      GANADOR: " + ganador.getNombre().toUpperCase());
+            System.out.println("🏆".repeat(30) + "\n");
         } else {
             int racha = 0;
             while (!partida.getEstado().equals(Estado.FINALIZADO)) {
                 System.out.println("\n" + "=".repeat(60));
                 System.out.println("TURNO DE: " + jugador1.getNombre().toUpperCase() + " (SOLO)");
                 System.out.println("=".repeat(60));
-                mostrarEstadoJuego(jugador1, null, partida); // Solo un jugador
+                mostrarEstadoJuego(jugador1, null, partida, racha); // Solo un jugador
 
                 TipoApuesta apuesta = solicitarApuesta(jugador1);
                 partida.Apuesta(jugador1, apuesta);
-
+                if (partida.getEstado().equals(Estado.FINALIZADO)) {
+                    break;
+                }
                 racha++; // contar aciertos consecutivos
                 System.out.println("\nPresiona ENTER para continuar...");
                 scanner.nextLine();
@@ -175,19 +178,18 @@ public class Main {
             }
         }
 
-    private static void mostrarEstadoJuego(Jugador.Jugador jugador1, Jugador.Jugador jugador2, Partida partida) {
+    private static void mostrarEstadoJuego(Jugador.Jugador jugador1, Jugador.Jugador jugador2, Partida partida, int rachaActual) {
         System.out.println("\nESTADO DEL JUEGO:");
         System.out.println("┌" + "─".repeat(58) + "┐");
         if (!partida.getModoJuego().equals(ModoJuego.SOLO)) {
-            System.out.println(String.format("│ %-20s ❤️  Vidas: %d      🔫 Balas: %d         │",
+            System.out.println(String.format("│ %-20s ❤️  Vidas: %d      🔫 Balas: %d      │",
                     jugador1.getNombre(), jugador1.getVidas(), contarBalas(jugador1.getRevolver())));
-            System.out.println(String.format("│ %-20s ❤️  Vidas: %d      🔫 Balas: %d         │",
+            System.out.println(String.format("│ %-20s ❤️  Vidas: %d      🔫 Balas: %d      │",
                     jugador2.getNombre(), jugador2.getVidas(), contarBalas(jugador2.getRevolver())));
             System.out.println("└" + "─".repeat(58) + "┘");
         } else {
-            System.out.println("| Aca va la racha y el puntaje |\n" +
-                    jugador1.getNombre());
-
+            System.out.println(" ".repeat(20) + jugador1.getNombre() + "| Racha actual: " + rachaActual + "|" );
+            System.out.println("└" + "─".repeat(58) + "┘");
         }
         // Mostrar la carta actual
         if (partida.getCartaActual() != null) {
