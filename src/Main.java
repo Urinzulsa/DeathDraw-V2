@@ -220,7 +220,7 @@ public class Main {
 
         return switch (opcion) {
             case 1 -> TipoApuesta.MAYOR;
-            case 2 -> TipoApuesta.MENOR;
+            case 2 -> TipoApuesta.MENOR;8
             default -> TipoApuesta.MAYOR; 
         };
     }
