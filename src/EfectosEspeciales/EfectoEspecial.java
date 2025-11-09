@@ -16,7 +16,6 @@ public abstract class EfectoEspecial {
     public static EfectoEspecial crear(TipoEfecto tipo) {
         return switch (tipo) {
             case VIDA_EXTRA -> new VidaExtra();
-            case DOBLE_TURNO -> new DobleTurno();
             case VAMPIRO -> new Vampiro();
             case DESARMAR -> new Desarmar();
             case SABOTAJE -> new Sabotaje();

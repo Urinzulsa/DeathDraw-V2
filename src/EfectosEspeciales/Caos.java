@@ -11,15 +11,20 @@ public class Caos extends EfectoEspecial {
     @Override
     public String aplicar(Jugador jugador1, Jugador jugador2, CategoriaEfecto categoria) {
         // Caos siempre es neutro, ignora la categoría
-        // Generar cantidades aleatorias de balas para cada jugador (0-6)
-        int nuevasBalasJ1 = (int) (Math.random() * 7); // 0 a 6 balas
-        int nuevasBalasJ2 = (int) (Math.random() * 7); // 0 a 6 balas
+        // Generar cantidad aleatoria de balas para el jugador (0-6)
+        int nuevasBalas = (int) (Math.random() * 7); // 0 a 6 balas
 
-        // Aplicar el cambio a los revólveres
-        jugador1.getRevolver().setBalas(nuevasBalasJ1);
-        jugador2.getRevolver().setBalas(nuevasBalasJ2);
+        // Aplicar el cambio al revólver del jugador actual
+        jugador1.getRevolver().setBalas(nuevasBalas);
 
-        return "¡CAOS! El revólver de " + jugador1.getNombre() + " ahora tiene " + nuevasBalasJ1 +
-                " balas y el de " + jugador2.getNombre() + " tiene " + nuevasBalasJ2 + " balas.";
+        // Si hay un segundo jugador (modo 2v2), también cambiar sus balas
+        if (jugador2 != null) {
+            int nuevasBalasJ2 = (int) (Math.random() * 7); // 0 a 6 balas
+            jugador2.getRevolver().setBalas(nuevasBalasJ2);
+            return "¡CAOS! El revólver de " + jugador1.getNombre() + " ahora tiene " + nuevasBalas +
+                    " balas y el de " + jugador2.getNombre() + " tiene " + nuevasBalasJ2 + " balas.";
+        }
+
+        return "¡CAOS! El revólver de " + jugador1.getNombre() + " ahora tiene " + nuevasBalas + " balas.";
     }
 }

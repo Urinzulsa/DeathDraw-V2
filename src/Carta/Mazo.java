@@ -40,11 +40,23 @@ public class Mazo {
 
     // Método para crear un mazo estándar con distribución fija de efectos (15% por defecto)
     public static Mazo crearMazoEstandar() {
-        return crearMazoEstandar(0.15);
+        return crearMazoEstandar(0.15, true);
     }
 
     // Método para crear un mazo estándar con probabilidad configurable de efectos especiales
     public static Mazo crearMazoEstandar(double probabilidadEspeciales) {
+        return crearMazoEstandar(probabilidadEspeciales, true);
+    }
+
+    /**
+     * Método para crear un mazo estándar con probabilidad configurable de efectos especiales
+     * y filtrado por modo de juego (1v1 o 2v2)
+     * 
+     * @param probabilidadEspeciales Probabilidad de que una carta tenga efecto especial (0.0 a 1.0)
+     * @param esModo2v2 true si es modo 2v2 (todos los efectos), false si es modo 1v1 (solo efectos que no requieren segundo jugador)
+     * @return Mazo configurado según los parámetros
+     */
+    public static Mazo crearMazoEstandar(double probabilidadEspeciales, boolean esModo2v2) {
         List<Carta> mazoCompleto = new java.util.ArrayList<>();
 
         // 1. Crear un mazo de póker estándar de 52 cartas
@@ -60,15 +72,17 @@ public class Mazo {
         // 3. Barajar el mazo para que las cartas a las que se les asignará efecto sean aleatorias
         java.util.Collections.shuffle(mazoCompleto);
 
-        // 4. Asignar efectos especiales a las primeras N cartas según la probabilidad
-        TipoEfecto[] efectos = TipoEfecto.values();
+        // 4. Seleccionar los efectos disponibles según el modo de juego
+        TipoEfecto[] efectosDisponibles = esModo2v2 ? TipoEfecto.getEfectos2v2() : TipoEfecto.getEfectos1v1();
+
+        // 5. Asignar efectos especiales a las primeras N cartas según la probabilidad
         for (int i = 0; i < numCartasEspeciales && i < mazoCompleto.size(); i++) {
-            // Seleccionar un efecto aleatorio
-            TipoEfecto efectoAleatorio = efectos[(int) (Math.random() * efectos.length)];
+            // Seleccionar un efecto aleatorio de los disponibles para este modo de juego
+            TipoEfecto efectoAleatorio = efectosDisponibles[(int) (Math.random() * efectosDisponibles.length)];
             mazoCompleto.get(i).setEfecto(EfectoEspecial.crear(efectoAleatorio));
         }
 
-        // 5. Volver a barajar todo el mazo para que las cartas especiales queden distribuidas
+        // 6. Volver a barajar todo el mazo para que las cartas especiales queden distribuidas
         java.util.Collections.shuffle(mazoCompleto);
 
         return new Mazo(mazoCompleto);

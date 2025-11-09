@@ -72,7 +72,7 @@ public class Main {
         System.out.println("4.  MODO SOLO");
         System.out.println("   - Vidas: 1 ");
         System.out.println("   - Balas iniciales: 1 (SI PIERDE EL JUEGO TERMINA)");
-        System.out.println("   - Cartas especiales: 0%");
+        System.out.println("   - Cartas especiales: 20%");
         System.out.println();
 
         int opcion = 0;
@@ -222,7 +222,7 @@ public class Main {
 
         return switch (opcion) {
             case 1 -> TipoApuesta.MAYOR;
-            case 2 -> TipoApuesta.MENOR;8
+            case 2 -> TipoApuesta.MENOR;
             default -> TipoApuesta.MAYOR; 
         };
     }

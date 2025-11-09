@@ -15,8 +15,13 @@ public class Desarmar extends EfectoEspecial {
                 jugador1.getRevolver().quitarBala();
                 return jugador1.getNombre() + " se libra de una bala de su revólver";
             case NEGATIVA:
-                jugador2.getRevolver().quitarBala();
-                return jugador2.getNombre() + " se libra de una bala de su revólver";
+                // En modo 1v1, el negativo también afecta al jugador1
+                if (jugador2 != null) {
+                    jugador2.getRevolver().quitarBala();
+                    return jugador2.getNombre() + " se libra de una bala de su revólver";
+                } else {
+                    return jugador1.getNombre() + " no puede desarmar a nadie";
+                }
         }
         return "";
     }

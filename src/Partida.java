@@ -88,7 +88,11 @@ public class Partida {
             throw new PartidaIniciadaException();
         }
         this.estado = Estado.EN_CURSO;
-        this.mazo = Mazo.crearMazoEstandar(modoJuego.getProbabilidadEspeciales());
+        
+        // Determinar si es modo 2v2 (todos los efectos) o 1v1 (solo efectos sin segundo jugador)
+        boolean esModo2v2 = !modoJuego.equals(ModoJuego.SOLO);
+        this.mazo = Mazo.crearMazoEstandar(modoJuego.getProbabilidadEspeciales(), esModo2v2);
+        
         this.cartaActual = mazo.robarCarta();
         if (!modoJuego.equals(ModoJuego.SOLO)) {
             return "La partida ha comenzado en " + modoJuego + "\n" +
@@ -164,7 +168,8 @@ public class Partida {
         String resultadoEfecto;
 
         // Comprobar si el efecto es neutral ANTES de pedir la moneda
-        if (carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.SABOTAJE || carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.CAOS) {
+        if (carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.SABOTAJE || 
+            carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.CAOS) {
             System.out.println("🌟".repeat(60));
             resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, null);
         } else {

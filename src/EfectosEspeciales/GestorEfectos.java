@@ -41,13 +41,12 @@ public class GestorEfectos {
 
     public static String obtenerDescripcionEfecto(TipoEfecto tipo) {
         return switch (tipo) {
-            case VIDA_EXTRA -> "Positivo: gana una vida, Negativo: pierde una vida";
-            case DOBLE_TURNO -> "Positivo: el rival juega 2 turnos, Negativo: tú juegas 2 turnos";
-            case VAMPIRO -> "Positivo: robas una vida, Negativo: pierdes una vida";
-            case DESARMAR -> "Positivo: descartas una bala de tu revólver, Negativo: el oponente descarta una bala de su revólver";
-            case SABOTAJE -> "Intercambia los revólveres (neutral)";
-            case BALA_LOCA -> "Positivo: rival gana bala, Negativo: tú ganas bala";
-            case CAOS -> "Cambia aleatoriamente las balas de ambos revólveres (neutral)";
+            case VIDA_EXTRA -> "Positivo: ganas una vida, Negativo: pierdes una vida";
+            case VAMPIRO -> "Positivo: robas una vida al oponente, Negativo: el oponente te roba una vida";
+            case DESARMAR -> "Positivo: descartas una bala de tu revólver, Negativo: el oponente descarta una bala";
+            case SABOTAJE -> "Intercambia los revólveres con el oponente (neutral)";
+            case BALA_LOCA -> "Positivo: aparece una bala en el revólver del oponente, Negativo: aparece una bala en tu revólver";
+            case CAOS -> "Cambia aleatoriamente las balas del revólver (neutral)";
         };
     }
 }
