@@ -1,3 +1,4 @@
+import Exceptions.*;
 import Jugador.Jugador;
 import Jugador.Revolver;
 import Carta.Mazo;
@@ -74,14 +75,14 @@ public class Partida {
     }
 
 
-    public String iniciarPartida() throws PartidaIniciadaException {
+    public String iniciarPartida() throws PartidaIniciadaException, JugadorNullException {
         if (!modoJuego.equals(ModoJuego.SOLO)) {
             if (jugador1 == null || jugador2 == null) {
                 throw new IllegalArgumentException("EL JUGADOR SE ENCUENTRA VACIO");
             }
         } else {
             if (jugador1 == null) {
-                throw new IllegalArgumentException("EL JUGADOR SE ENCUENTRA VACIO");
+                throw new JugadorNullException("EL JUGADOR SE ENCUENTRA VACIO");
             }
         }
         if (estado != Estado.NO_INICIADO) {
@@ -106,12 +107,12 @@ public class Partida {
     }
 
     // El jugador pasa su apuesta (MAYOR, MENOR o IGUAL) para la carta que se roba del mazo
-    public void Apuesta(Jugador jugador, TipoApuesta apuesta) {
+    public void Apuesta(Jugador jugador, TipoApuesta apuesta) throws PartidaNoIniciadaException,CartaNulaException {
         if (estado != Estado.EN_CURSO) {
-            throw new IllegalStateException("La partida no está en curso");
+            throw new PartidaNoIniciadaException("La partida no está en curso");
         }
         if (cartaActual == null) {
-            throw new IllegalStateException("No hay carta actual para comparar");
+            throw new CartaNulaException("No hay carta actual para comparar");
         }
 
         Carta nueva = mazo.robarCarta();

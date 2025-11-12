@@ -1,5 +1,6 @@
 package EfectosEspeciales;
 
+import Exceptions.JugadorNullException;
 import Jugador.Jugador;
 
 public class Desarmar extends EfectoEspecial {
@@ -20,7 +21,7 @@ public class Desarmar extends EfectoEspecial {
                     jugador2.getRevolver().quitarBala();
                     return jugador2.getNombre() + " se libra de una bala de su revólver";
                 } else {
-                    return jugador1.getNombre() + " no puede desarmar a nadie";
+                    throw new JugadorNullException(jugador1.getNombre() + " no puede desarmar a nadie");
                 }
         }
         return "";

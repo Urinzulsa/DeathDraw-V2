@@ -1,5 +1,6 @@
 package EfectosEspeciales;
 
+import Exceptions.JugadorNullException;
 import Jugador.Jugador;
 
 public class BalaLoca extends EfectoEspecial {
@@ -18,7 +19,7 @@ public class BalaLoca extends EfectoEspecial {
                     return "¡Una bala loca aparece en el revólver de " + jugador2.getNombre() + "!";
                 } else {
                     // En modo SOLO, el positivo no carga bala (ya que no hay rival)
-                    return jugador1.getNombre() + " esquiva la bala loca";
+                    throw new JugadorNullException(jugador1.getNombre() + " esquiva la bala loca ");
                 }
             case NEGATIVA:
                 jugador1.getRevolver().cargarBala();
