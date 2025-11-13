@@ -1,3 +1,6 @@
+import Exceptions.CartaNulaException;
+import Exceptions.PartidaNoIniciadaException;
+
 import java.util.Scanner;
 
 public class Main {
@@ -72,7 +75,6 @@ public class Main {
         System.out.println("4.  MODO SOLO");
         System.out.println("   - Vidas: 1 ");
         System.out.println("   - Balas iniciales: 1 (SI PIERDE EL JUEGO TERMINA)");
-        System.out.println("   - Cartas especiales: 20%");
         System.out.println();
 
         int opcion = 0;
@@ -124,7 +126,7 @@ public class Main {
 
     }
 
-    private static void jugarPartida(Partida partida) {
+    private static void jugarPartida(Partida partida) throws PartidaNoIniciadaException,CartaNulaException{
         Jugador.Jugador jugador1 = partida.getJugador1();
 
         if (!modoSeleccionado.equals(ModoJuego.SOLO)) {
@@ -139,7 +141,13 @@ public class Main {
                 mostrarEstadoJuego(jugador1, jugador2, partida, 0);
 
                 TipoApuesta apuesta = solicitarApuesta(jugadorActual);
-                partida.Apuesta(jugadorActual, apuesta);
+                try {
+                    partida.Apuesta(jugadorActual, apuesta);
+                }catch (PartidaNoIniciadaException e){
+                    System.out.println("ERROR AL REALIZAR APUESTA: " + e.getMessage());
+                } catch (CartaNulaException e) {
+                    throw new RuntimeException(e);
+                }
 
                 partida.incrementarTurno();
 

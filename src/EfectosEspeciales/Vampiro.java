@@ -1,5 +1,6 @@
 package EfectosEspeciales;
 
+import Exceptions.JugadorNullException;
 import Jugador.Jugador;
 
 public class Vampiro extends EfectoEspecial {
@@ -10,6 +11,9 @@ public class Vampiro extends EfectoEspecial {
 
     @Override
     public String aplicar(Jugador jugador1, Jugador jugador2, CategoriaEfecto categoria) {
+        if (jugador1 == null || jugador2 == null) {
+            throw new JugadorNullException("Los jugadores no pueden ser nulos al aplicar el efecto Vampiro.");
+        }
         switch (categoria) {
             case POSITIVA:
                 jugador1.ganarVida();

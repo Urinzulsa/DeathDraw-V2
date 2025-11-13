@@ -1,3 +1,4 @@
+import EfectosEspeciales.TipoEfecto;
 import Exceptions.*;
 import Jugador.Jugador;
 import Jugador.Revolver;
@@ -89,11 +90,11 @@ public class Partida {
             throw new PartidaIniciadaException();
         }
         this.estado = Estado.EN_CURSO;
-        
+
         // Determinar si es modo 2v2 (todos los efectos) o 1v1 (solo efectos sin segundo jugador)
         boolean esModo2v2 = !modoJuego.equals(ModoJuego.SOLO);
         this.mazo = Mazo.crearMazoEstandar(modoJuego.getProbabilidadEspeciales(), esModo2v2);
-        
+
         this.cartaActual = mazo.robarCarta();
         if (!modoJuego.equals(ModoJuego.SOLO)) {
             return "La partida ha comenzado en " + modoJuego + "\n" +
@@ -105,16 +106,18 @@ public class Partida {
                     "\nLA PRIMER CARTA DEL MAZO ES: " + cartaActual;
         }
     }
+    private void validarPartidaActiva() throws PartidaNoIniciadaException, CartaNulaException {
+        if (estado != Estado.EN_CURSO)
+            throw new PartidaNoIniciadaException("La partida no está en curso");
+        if (cartaActual == null)
+            throw new CartaNulaException("No hay carta actual para comparar");
+        if (modoJuego == null)
+            throw new PartidaNoIniciadaException("Modo de juego no definido");
+    }
 
     // El jugador pasa su apuesta (MAYOR, MENOR o IGUAL) para la carta que se roba del mazo
-    public void Apuesta(Jugador jugador, TipoApuesta apuesta) throws PartidaNoIniciadaException,CartaNulaException {
-        if (estado != Estado.EN_CURSO) {
-            throw new PartidaNoIniciadaException("La partida no está en curso");
-        }
-        if (cartaActual == null) {
-            throw new CartaNulaException("No hay carta actual para comparar");
-        }
-
+    public void Apuesta(Jugador jugador, TipoApuesta apuesta) throws PartidaNoIniciadaException, CartaNulaException {
+        validarPartidaActiva();
         Carta nueva = mazo.robarCarta();
         System.out.println(jugador.getNombre() + " apuesta: " + apuesta + " | Carta actual: " + cartaActual + " | Carta a revelar: " + nueva);
 
@@ -141,50 +144,67 @@ public class Partida {
         } else {
             System.out.println("❌ ERROR! Se acciona el revolver...");
             boolean bala = jugador.getRevolver().girarYDisparar();
-
-            if (bala) {
-                if (modoJuego.equals(ModoJuego.SOLO)) {
-                    System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
-                    this.estado = Estado.FINALIZADO;
-                    return;
+            if (modoJuego.equals(ModoJuego.SOLO)) {
+                // Lógica de fallo para MODO SOLO
+                System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
+                this.estado = Estado.FINALIZADO;
+                // Ya no es necesario el 'return' si usamos 'else'
+            } else if (!modoJuego.equals(ModoJuego.SOLO)) {
+                if (bala) {
+                    // Lógica de fallo para MODO MULTIJUGADOR
+                    jugador.perderVida();
+                    jugador.getRevolver().setBalas(1);
+                    System.out.println("💥 " + jugador.getNombre() + " recibe un impacto y pierde 1 vida. Vidas restantes: " + jugador.getVidas());
                 }
-                jugador.perderVida();
-                jugador.getRevolver().setBalas(1);
-                System.out.println("💥 " + jugador.getNombre() + " recibe un impacto y pierde 1 vida. Vidas restantes: " + jugador.getVidas());
-            } else {
+                else {
                 // No había bala: se agrega una al revólver del jugador
                 jugador.getRevolver().cargarBala();
                 System.out.println("🍀 " + jugador.getNombre() + " no recibió impacto. Se agrega una bala al revólver, apreta bien el chupete ");
             }
         }
+        }
     }
 
-    private void manejarEfectoDeCarta(Carta carta, Jugador jugador) {
+    private void manejarEfectoDeCarta(Carta carta, Jugador jugador) throws CartaNulaException,EfectoInvalidoException {
+        if (carta == null){
+            throw new CartaNulaException("LA CARTA ESPECIAL ES NULA");
+        }
         System.out.println("\n" + "🌟".repeat(60));
         System.out.println("¡CARTA ESPECIAL! Efecto: " + carta.getEfecto().getTipoEfecto());
         String descripcion = GestorEfectos.obtenerDescripcionEfecto(carta.getEfecto().getTipoEfecto());
         System.out.println("Descripción: " + descripcion);
 
         Jugador oponente = (jugador == jugador1) ? jugador2 : jugador1;
-        String resultadoEfecto;
+        String resultadoEfecto = null;
 
         // Comprobar si el efecto es neutral ANTES de pedir la moneda
-        if (carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.SABOTAJE || 
-            carta.getEfecto().getTipoEfecto() == EfectosEspeciales.TipoEfecto.CAOS) {
+        if (carta.getEfecto().getTipoEfecto() == TipoEfecto.SABOTAJE ||
+                carta.getEfecto().getTipoEfecto() == TipoEfecto.CAOS) {
             System.out.println("🌟".repeat(60));
-            resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, null);
+            try {
+                resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, null);
+            } catch (EfectoInvalidoException e) {
+                System.out.println("ERROR " + e.getMessage());
+            }
         } else {
             System.out.println("🌟".repeat(60));
             Lado eleccionMoneda = Moneda.solicitarEleccion(jugador, scanner);
+            try{
             resultadoEfecto = GestorEfectos.aplicarEfectoDeCarta(carta, jugador, oponente, eleccionMoneda);
         }
-        System.out.println("\n" + resultadoEfecto);
+            catch (EfectoInvalidoException e) {
+                System.out.println("ERROR "+ e.getMessage());
+            }
+        }
+        if(resultadoEfecto!=null) {
+            System.out.println("\n" + resultadoEfecto);
+        }
 
         // Comprobar si el efecto finalizó la partida
-        if(!modoJuego.equals(ModoJuego.SOLO)){
-        if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
-            estado = Estado.FINALIZADO;
-        }
+        if (!modoJuego.equals(ModoJuego.SOLO)) {
+            if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
+                estado = Estado.FINALIZADO;
+            }
         }
     }
 

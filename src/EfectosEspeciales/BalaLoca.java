@@ -11,6 +11,9 @@ public class BalaLoca extends EfectoEspecial {
 
     @Override
     public String aplicar(Jugador jugador1, Jugador jugador2, CategoriaEfecto categoria) {
+        if (jugador1 == null ) {
+            throw new JugadorNullException("Los jugadores no pueden ser nulos al aplicar el efecto BALA LOCA.");
+        }
         switch (categoria) {
             case POSITIVA:
                 // En modo 1v1, si no hay jugador2, el positivo no hace nada

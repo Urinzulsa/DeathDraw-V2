@@ -1,5 +1,6 @@
 package Moneda;
 
+import Exceptions.JugadorNullException;
 import Jugador.Jugador;
 import java.util.Scanner;
 
@@ -13,6 +14,9 @@ public class Moneda {
     }
 
     public static Lado solicitarEleccion(Jugador jugador, Scanner scanner) {
+        if (jugador ==null ){
+            throw new JugadorNullException("JUGADOR NO PUEDE SER NULO");
+        }
         System.out.println("\n" + jugador.getNombre() + ", lanza una moneda para determinar el efecto:");
         System.out.println("1. CARA");
         System.out.println("2. CRUZ");

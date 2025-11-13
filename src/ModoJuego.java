@@ -2,7 +2,7 @@ public enum ModoJuego {
     CLASICO(3, 1, 0.15),
     SOBRECARGA(5, 2, 0.20),
     MUERTE_SUBITA(1, 6, 0.05),
-    SOLO(1,1,0.20);
+    SOLO(1,1,0.00);
 
     private final int vidasIniciales;
     private final int balasIniciales;

@@ -2,6 +2,7 @@ package Carta;
 
 import EfectosEspeciales.EfectoEspecial;
 import EfectosEspeciales.TipoEfecto;
+import Exceptions.MazoVacioException;
 
 import java.util.List;
 
@@ -20,7 +21,11 @@ public class Mazo {
     }
 
     public Carta robarCarta() {
+
         if (cartas.isEmpty()) {
+            if (usadas.isEmpty()) {
+                throw new MazoVacioException("No hay cartas disponibles en el mazo ni en las usadas.");
+            }
             cartas.addAll(usadas);
             usadas.clear();
             java.util.Collections.shuffle(cartas);
