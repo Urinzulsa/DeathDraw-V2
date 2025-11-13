@@ -25,6 +25,30 @@ public enum ModoJuego {
     public double getProbabilidadEspeciales() {
         return probabilidadEspeciales;
     }
+    
+    /**
+     * Convierte un String al enum ModoJuego correspondiente.
+     * <p>
+     * Valores válidos: "CLASICO", "SOBRECARGA", "MUERTE_SUBITA", "SOLO"
+     * </p>
+     * 
+     * @param nombre Nombre del modo (case-sensitive)
+     * @return El enum ModoJuego correspondiente
+     * @throws IllegalArgumentException si el nombre no es válido
+     */
+    public static ModoJuego fromString(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del modo no puede ser null o vacío");
+        }
+        
+        try {
+            return valueOf(nombre.trim());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                "Modo de juego inválido: '" + nombre + "'. Valores válidos: CLASICO, SOBRECARGA, MUERTE_SUBITA, SOLO"
+            );
+        }
+    }
 
     @Override
     public String toString() {
