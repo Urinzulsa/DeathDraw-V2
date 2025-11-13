@@ -1,5 +1,10 @@
 package Jugador;
 
+import Exceptions.JugadorNullException;
+import Exceptions.NombreInvalidoException;
+import Exceptions.RevolverNullException;
+import Exceptions.VidasInvalidasException;
+
 /**
  * Representa un jugador en el juego DeathDraw.
  * <p>
@@ -47,8 +52,11 @@ public class Jugador {
      * @param nombre Nombre del jugador (no puede ser null o vacío)
      * @param revolver Revólver del jugador (no puede ser null)
      * @param vidasMaximas Número máximo de vidas según el modo
-     * @throws IllegalArgumentException si algún parámetro es inválido
+     * @throws NombreInvalidoException si el nombre es null o vacío
+     * @throws RevolverNullException si el revolver es null
+     * @throws VidasInvalidasException si vidasMaximas <= 0
      */
+
     public Jugador(String nombre, Revolver revolver, int vidasMaximas) {
         // Validar parámetros
         validarNombre(nombre);
@@ -66,7 +74,7 @@ public class Jugador {
      * 
      * @param nombre Nombre del jugador
      * @param revolver Revólver del jugador
-     * @throws IllegalArgumentException si algún parámetro es inválido
+     * @throws JugadorNullException si algún parámetro es inválido
      */
     public Jugador(String nombre, Revolver revolver) {
         this(nombre, revolver, VIDAS_DEFAULT);
@@ -78,11 +86,11 @@ public class Jugador {
      * Valida que el nombre no sea null ni vacío.
      * 
      * @param nombre Nombre a validar
-     * @throws IllegalArgumentException si el nombre es inválido
+     * @throws NombreInvalidoException si el nombre es inválido
      */
     private void validarNombre(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del jugador no puede ser null o vacío");
+            throw new NombreInvalidoException("El nombre del jugador no puede ser null o vacío");
         }
     }
 
@@ -90,11 +98,11 @@ public class Jugador {
      * Valida que el revólver no sea null.
      * 
      * @param revolver Revólver a validar
-     * @throws IllegalArgumentException si el revólver es null
+     * @throws RevolverNullException si el revólver es null
      */
     private void validarRevolver(Revolver revolver) {
         if (revolver == null) {
-            throw new IllegalArgumentException("El revólver no puede ser null");
+            throw new RevolverNullException("El revólver no puede ser null");
         }
     }
 
@@ -102,11 +110,11 @@ public class Jugador {
      * Valida que las vidas máximas sean positivas.
      * 
      * @param vidasMaximas Vidas máximas a validar
-     * @throws IllegalArgumentException si las vidas no son válidas
+     * @throws VidasInvalidasException si las vidas no son válidas
      */
     private void validarVidasMaximas(int vidasMaximas) {
         if (vidasMaximas <= 0) {
-            throw new IllegalArgumentException("Las vidas máximas deben ser mayores a 0");
+            throw new VidasInvalidasException("Las vidas máximas deben ser mayores a 0");
         }
     }
 
@@ -157,7 +165,7 @@ public class Jugador {
      * </p>
      * 
      * @param nuevoRevolver Nuevo revólver (no puede ser null)
-     * @throws IllegalArgumentException si el revólver es null
+     * @throws RevolverNullException si el revólver es null
      */
     public void setRevolver(Revolver nuevoRevolver) {
         validarRevolver(nuevoRevolver);
@@ -172,15 +180,15 @@ public class Jugador {
      * </p>
      * 
      * @param vidas Número de vidas a establecer
-     * @throws IllegalArgumentException si las vidas son negativas o exceden el máximo
+     * @throws VidasInvalidasException si las vidas son negativas o exceden el máximo
      */
     public void setVidas(int vidas) {
         if (vidas < VIDAS_MINIMAS) {
-            throw new IllegalArgumentException("Las vidas no pueden ser negativas");
+            throw new VidasInvalidasException("Las vidas no pueden ser negativas");
         }
         if (vidas > vidasMaximas) {
-            throw new IllegalArgumentException(
-                "Las vidas no pueden exceder el máximo de " + vidasMaximas
+            throw new VidasInvalidasException(
+                    "Las vidas no pueden exceder el máximo de " + vidasMaximas
             );
         }
         this.vidas = vidas;

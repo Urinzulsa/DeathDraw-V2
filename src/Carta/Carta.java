@@ -1,6 +1,7 @@
 package Carta;
 
 import EfectosEspeciales.EfectoEspecial;
+import Exceptions.CartaNulaException;
 
 /**
  * Representa una carta del mazo de póker estándar.
@@ -42,7 +43,7 @@ public class Carta {
      * 
      * @param valor Valor de la carta (1-13)
      * @param palo Palo de la carta
-     * @throws IllegalArgumentException si el valor está fuera de rango o palo es null
+     * @throws CartaNulaException si el valor está fuera de rango o palo es null
      */
     public Carta(int valor, Palo palo) {
         validarValor(valor);
@@ -59,7 +60,7 @@ public class Carta {
      * @param valor Valor de la carta (1-13)
      * @param palo Palo de la carta
      * @param efecto Efecto especial de la carta
-     * @throws IllegalArgumentException si el valor está fuera de rango o palo es null
+     * @throws CartaNulaException si el valor está fuera de rango o palo es null
      */
     public Carta(int valor, Palo palo, EfectoEspecial efecto) {
         this(valor, palo); // Reutiliza el constructor principal
@@ -72,11 +73,11 @@ public class Carta {
      * Valida que el valor esté en el rango permitido.
      * 
      * @param valor Valor a validar
-     * @throws IllegalArgumentException si el valor está fuera de rango
+     * @throws CartaNulaException si el valor está fuera de rango
      */
     private void validarValor(int valor) {
         if (valor < VALOR_MINIMO || valor > VALOR_MAXIMO) {
-            throw new IllegalArgumentException(
+            throw new CartaNulaException(
                 "El valor de la carta debe estar entre " + VALOR_MINIMO + 
                 " y " + VALOR_MAXIMO + ". Valor recibido: " + valor
             );
@@ -87,11 +88,11 @@ public class Carta {
      * Valida que el palo no sea null.
      * 
      * @param palo Palo a validar
-     * @throws IllegalArgumentException si el palo es null
+     * @throws CartaNulaException si el palo es null
      */
     private void validarPalo(Palo palo) {
         if (palo == null) {
-            throw new IllegalArgumentException("El palo de la carta no puede ser null");
+            throw new CartaNulaException("El palo de la carta no puede ser null");
         }
     }
 
@@ -106,7 +107,7 @@ public class Carta {
      * 
      * @param otraCarta Carta a comparar
      * @return true si el valor de esta carta es mayor
-     * @throws IllegalArgumentException si otraCarta es null
+     * @throws CartaNulaException si otraCarta es null
      */
     public boolean esMayorQue(Carta otraCarta) {
         validarCartaComparacion(otraCarta);
@@ -122,7 +123,7 @@ public class Carta {
      * 
      * @param otraCarta Carta a comparar
      * @return true si el valor de esta carta es menor
-     * @throws IllegalArgumentException si otraCarta es null
+     * @throws CartaNulaException si otraCarta es null
      */
     public boolean esMenorQue(Carta otraCarta) {
         validarCartaComparacion(otraCarta);
@@ -138,7 +139,7 @@ public class Carta {
      * 
      * @param otraCarta Carta a comparar
      * @return true si ambas tienen el mismo valor
-     * @throws IllegalArgumentException si otraCarta es null
+     * @throws CartaNulaException si otraCarta es null
      */
     public boolean esIgualQue(Carta otraCarta) {
         validarCartaComparacion(otraCarta);
@@ -153,7 +154,7 @@ public class Carta {
      */
     private void validarCartaComparacion(Carta carta) {
         if (carta == null) {
-            throw new IllegalArgumentException("No se puede comparar con una carta null");
+            throw new CartaNulaException("No se puede comparar con una carta null");
         }
     }
 
