@@ -22,7 +22,7 @@ public class BalaLoca extends EfectoEspecial {
                     return "¡Una bala loca aparece en el revólver de " + jugador2.getNombre() + "!";
                 } else {
                     // En modo SOLO, el positivo no carga bala (ya que no hay rival)
-                    throw new JugadorNullException(jugador1.getNombre() + " esquiva la bala loca ");
+                    return jugador1.getNombre() + " esquiva la bala loca (no hay oponente)";
                 }
             case NEGATIVA:
                 jugador1.getRevolver().cargarBala();

@@ -220,7 +220,7 @@ public class Main {
             System.out.print("\nTu apuesta (1-2): ");
             try {
                 opcion = Integer.parseInt(scanner.nextLine().trim());
-                if (opcion < 1 || opcion > 3) {
+                if (opcion < 1 || opcion > 2) {
                     System.out.println("Opción inválida. Elige entre 1 y 2.");
                 }
             } catch (NumberFormatException e) {

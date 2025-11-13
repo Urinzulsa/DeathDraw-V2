@@ -143,25 +143,24 @@ public class Partida {
             }
         } else {
             System.out.println("❌ ERROR! Se acciona el revolver...");
-            boolean bala = jugador.getRevolver().girarYDisparar();
             if (modoJuego.equals(ModoJuego.SOLO)) {
                 // Lógica de fallo para MODO SOLO
+                jugador.perderVida();
                 System.out.println(jugador.getNombre() + " recibe un impacto y pierde 1 vida.\n EL JUEGO TERMINO");
                 this.estado = Estado.FINALIZADO;
-                // Ya no es necesario el 'return' si usamos 'else'
-            } else if (!modoJuego.equals(ModoJuego.SOLO)) {
+            } else {
+                // Lógica de fallo para MODO MULTIJUGADOR
+                boolean bala = jugador.getRevolver().girarYDisparar();
                 if (bala) {
-                    // Lógica de fallo para MODO MULTIJUGADOR
                     jugador.perderVida();
                     jugador.getRevolver().setBalas(1);
                     System.out.println("💥 " + jugador.getNombre() + " recibe un impacto y pierde 1 vida. Vidas restantes: " + jugador.getVidas());
+                } else {
+                    // No había bala: se agrega una al revólver del jugador
+                    jugador.getRevolver().cargarBala();
+                    System.out.println("🍀 " + jugador.getNombre() + " no recibió impacto. Se agrega una bala al revólver, apreta bien el chupete ");
                 }
-                else {
-                // No había bala: se agrega una al revólver del jugador
-                jugador.getRevolver().cargarBala();
-                System.out.println("🍀 " + jugador.getNombre() + " no recibió impacto. Se agrega una bala al revólver, apreta bien el chupete ");
             }
-        }
         }
     }
 
@@ -203,6 +202,11 @@ public class Partida {
         // Comprobar si el efecto finalizó la partida
         if (!modoJuego.equals(ModoJuego.SOLO)) {
             if (jugador1.getVidas() <= 0 || jugador2.getVidas() <= 0) {
+                estado = Estado.FINALIZADO;
+            }
+        } else {
+            // En modo SOLO, verificar si el jugador perdió todas las vidas
+            if (jugador1.getVidas() <= 0) {
                 estado = Estado.FINALIZADO;
             }
         }
@@ -249,13 +253,6 @@ public class Partida {
             // Separación visual
             System.out.println("---");
         }
-
-        if (modoJuego.equals(ModoJuego.SOLO)) {
-            /// A ARREGLAR;
-
-
-        }
-
     }
 
     public Estado getEstado() {
