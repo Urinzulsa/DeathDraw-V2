@@ -35,7 +35,6 @@ public class GestorEfectos {
         }
     }
 
-
     public static String aplicarEfectoDeCarta(Carta carta, Jugador jugador1, Jugador jugador2, Lado eleccionMoneda) throws EfectoInvalidoException {
         if (carta == null || carta.getEfecto() == null || !carta.tieneEfecto()) {
             throw new EfectoInvalidoException("EL EFECTO ESPECIAL ES INVALIDO (NULO,VACIO U OTRO)");

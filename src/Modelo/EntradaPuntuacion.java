@@ -1,8 +1,5 @@
 package Modelo;
 
-/**
- * Representa una entrada de puntuación (nombre y puntaje).
- */
 public class EntradaPuntuacion implements Comparable<EntradaPuntuacion> {
     private final String nombre;
     private final int puntaje;

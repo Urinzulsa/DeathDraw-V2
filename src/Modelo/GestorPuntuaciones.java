@@ -10,35 +10,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Gestor simple de puntuaciones para modo SOLO.
- * <p>
- * Mantiene las top 5 entradas en un archivo JSON simple.
- * Implementa un fallback sencillo sin depender de librerías externas.
- * </p>
- */
-public class GestorPuntuaciones {
+public class GestorPuntuaciones implements IGestorPuntuaciones {
     private static final String DEFAULT_FILE = "highscores_solo.json";
     private static final int MAX_ENTRIES = 5;
 
     private final InterfazConsola consola = InterfazConsola.obtenerInstancia();
 
-    /**
-     * Intenta actualizar el archivo de puntuaciones con un nuevo puntaje.
-     * Si el puntaje entra en el top-5, guarda y devuelve true.
-     * Si no, no modifica el archivo y devuelve false.
-     *
-     * @param nombre Nombre del jugador
-     * @param puntaje Puntaje obtenido
-     * @return true si se obtuvo una nueva puntuación alta y se guardó
-     */
+    
     public boolean actualizarPuntuacion(String nombre, int puntaje) {
         return actualizarPuntuacion(nombre, puntaje, DEFAULT_FILE);
     }
 
-    /**
-     * Versión que recibe ruta de archivo (útil para tests).
-     */
+    
     public boolean actualizarPuntuacion(String nombre, int puntaje, String rutaArchivo) {
         try {
             List<EntradaPuntuacion> oldEntries = cargarDesdeArchivo(rutaArchivo);
@@ -71,16 +54,12 @@ public class GestorPuntuaciones {
         }
     }
 
-    /**
-     * Devuelve el top N (hasta MAX_ENTRIES) desde el archivo por defecto.
-     */
+    
     public List<EntradaPuntuacion> obtenerTop() {
         return obtenerTop(DEFAULT_FILE);
     }
 
-    /**
-     * Devuelve el top N desde la ruta indicada.
-     */
+    
     public List<EntradaPuntuacion> obtenerTop(String rutaArchivo) {
         try {
             List<EntradaPuntuacion> all = cargarDesdeArchivo(rutaArchivo);

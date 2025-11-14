@@ -6,7 +6,7 @@ import Exceptions.MazoVacioException;
 
 import java.util.List;
 
-public class Mazo {
+public class Mazo implements IMazo {
     private final List<Carta> cartas;
     private final List<Carta> usadas;
 
@@ -53,14 +53,7 @@ public class Mazo {
         return crearMazoEstandar(probabilidadEspeciales, true);
     }
 
-    /**
-     * Método para crear un mazo estándar con probabilidad configurable de efectos especiales
-     * y filtrado por modo de juego (1v1 o 2v2)
-     * 
-     * @param probabilidadEspeciales Probabilidad de que una carta tenga efecto especial (0.0 a 1.0)
-     * @param esModo2v2 true si es modo 2v2 (todos los efectos), false si es modo 1v1 (solo efectos que no requieren segundo jugador)
-     * @return Mazo configurado según los parámetros
-     */
+    
     public static Mazo crearMazoEstandar(double probabilidadEspeciales, boolean esModo2v2) {
         List<Carta> mazoCompleto = new java.util.ArrayList<>();
 

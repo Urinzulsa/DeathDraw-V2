@@ -2,17 +2,20 @@ import Exceptions.CartaNulaException;
 import Exceptions.PartidaNoIniciadaException;
 import Jugador.Jugador;
 import Modelo.GestorPuntuaciones;
+import Modelo.IGestorPuntuaciones;
 import Modelo.ResultadoApuesta;
 import Vista.InterfazConsola;
+import Vista.IMenu;
 import Vista.MenuPrincipal;
+import Vista.IVista;
 import Vista.VistaJuego;
 
 public class ControladorJuego {
 
     private final Partida partida;
     private final ModoJuego modo;
-    private final VistaJuego vista;
-    private final MenuPrincipal menu;
+    private final IVista vista;
+    private final IMenu menu;
     private final InterfazConsola consola;
 
     public ControladorJuego(Partida partida, ModoJuego modo) {
@@ -102,7 +105,7 @@ public class ControladorJuego {
     }
 
     private void gestionarHighscore(String nombre, int puntaje) {
-        GestorPuntuaciones gestorPuntuaciones = new GestorPuntuaciones();
+        IGestorPuntuaciones gestorPuntuaciones = new GestorPuntuaciones();
         boolean nuevo = gestorPuntuaciones.actualizarPuntuacion(nombre, puntaje);
         if (nuevo) {
             consola.mostrarExito("¡Felicidades! Has conseguido una nueva PUNTUACIÓN ALTA en modo SOLO: " + puntaje);
@@ -112,7 +115,7 @@ public class ControladorJuego {
         mostrarTablaPuntuaciones(gestorPuntuaciones);
     }
 
-    public void mostrarTablaPuntuaciones(GestorPuntuaciones gestorPuntuaciones) {
+    public void mostrarTablaPuntuaciones(IGestorPuntuaciones gestorPuntuaciones) {
         java.util.List<Modelo.EntradaPuntuacion> top = gestorPuntuaciones.obtenerTop();
         StringBuilder tabla = new StringBuilder();
         tabla.append(String.format("%3s | %-20s | %s\n", "#", "NOMBRE", "PUNTAJE"));

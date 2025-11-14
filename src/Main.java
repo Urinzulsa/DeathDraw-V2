@@ -8,39 +8,15 @@ import Vista.VistaJuego;
 import Modelo.ResultadoApuesta;
 import Modelo.GestorPuntuaciones;
 
-/**
- * Clase principal del juego DeathDraw.
- * <p>
- * Responsabilidades:
- * <ul>
- *   <li>Inicializar las vistas (MenuPrincipal, VistaJuego)</li>
- *   <li>Orquestar el flujo general del juego</li>
- *   <li>Coordinar entre la lógica de negocio (Partida) y la presentación (Vistas)</li>
- * </ul>
- * <p>
- * Esta clase NO contiene lógica de UI directa, delega todo a las clases Vista.
- * </p>
- *
- * @author DeathDraw-V2
- * @version 2.1
- */
 public class Main {
 
-    /**
-     * Vista de menús principales
-     */
+    
     private static MenuPrincipal menu;
 
-    /**
-     * Interfaz de consola
-     */
+    
     private static InterfazConsola consola;
 
-    /**
-     * Punto de entrada principal del juego.
-     *
-     * @param args Argumentos de línea de comandos (no utilizados)
-     */
+    
     public static void main(String[] args) {
         // Inicializar vistas
         inicializarVistas();
@@ -79,7 +55,6 @@ public class Main {
                 return; // Salir si hay error
             }
 
-
             // Iniciar y jugar partida
             try {
                 String resultado = partida.iniciarPartida();
@@ -100,21 +75,13 @@ public class Main {
         consola.cerrar();
     }
 
-    /**
-     * Inicializa las vistas básicas.
-     */
+    
     private static void inicializarVistas() {
         consola = InterfazConsola.obtenerInstancia();
         menu = new MenuPrincipal();
     }
 
-    /**
-     * Solicita nombres y agrega jugadores a la partida.
-     *
-     * @param partida Partida a la que agregar jugadores
-     * @param modo    Modo de juego seleccionado
-     * @return true si se agregaron correctamente, false si hubo error
-     */
+    
     private static boolean registrarJugadores(Partida partida, ModoJuego modo) {
         String[] nombresJugadores;
         while (true) {
