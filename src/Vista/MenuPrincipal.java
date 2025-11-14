@@ -32,6 +32,7 @@ public class MenuPrincipal implements IMenu {
         mostrarOpcionModo(3, "MODO MUERTE SÚBITA", 1, 6, 5);
         mostrarOpcionModoSolo(4, "MODO SOLO", 1, 1);
         consola.mostrarMensaje("5.  VER TOP 5 (SOLO)");
+        consola.mostrarMensaje("");
         consola.mostrarMensaje("6.  SALIR DEL JUEGO");
         consola.mostrarMensaje("");
 
