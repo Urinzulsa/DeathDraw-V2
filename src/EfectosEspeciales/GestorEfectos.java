@@ -8,8 +8,6 @@ import Moneda.Moneda;
 import Moneda.ResultadoMoneda;
 import Moneda.Lado;
 
-import javax.swing.plaf.TableHeaderUI;
-
 public class GestorEfectos {
     public static String aplicarEfectoConMoneda(EfectoEspecial efecto, Jugador jugador1, Jugador jugador2, Lado eleccionMoneda) throws EfectoInvalidoException {
         if (efecto == null || efecto.getTipoEfecto() == null) {
@@ -26,8 +24,8 @@ public class GestorEfectos {
         String mensajeMoneda = resultado.obtenerRepresentacion();
 
         // Determinar categoría según resultado de la moneda
-        CategoriaEfecto categoriaFinal = resultado.esAcierto() ? CategoriaEfecto.POSITIVA : CategoriaEfecto.NEGATIVA;
-        String tipoEfecto = resultado.esAcierto() ? "POSITIVO" : "NEGATIVO";
+        CategoriaEfecto categoriaFinal = resultado.acerto() ? CategoriaEfecto.POSITIVA : CategoriaEfecto.NEGATIVA;
+        String tipoEfecto = resultado.acerto() ? "POSITIVO" : "NEGATIVO";
         try {
             return mensajeMoneda + "\n" +
                     efecto.aplicar(jugador1, jugador2, categoriaFinal) +

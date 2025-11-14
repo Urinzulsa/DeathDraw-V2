@@ -13,7 +13,7 @@ import Carta.Carta;
  * @author DeathDraw-V2
  * @version 2.0
  */
-public class ResultadoApuesta {
+public class ResultadoApuesta implements Acerto {
 
     /** Indica si la apuesta fue acertada */
     private final boolean acerto;
@@ -104,7 +104,7 @@ public class ResultadoApuesta {
     }
     
     // ================ GETTERS ================
-    
+    @Override
     public boolean acerto() {
         return acerto;
     }

@@ -1,6 +1,8 @@
 package Moneda;
 
-public class ResultadoMoneda {
+import Modelo.Acerto;
+
+public class ResultadoMoneda implements Acerto {
     private final Lado eleccion;
     private final Lado resultado;
     private final boolean acierto;
@@ -19,7 +21,8 @@ public class ResultadoMoneda {
         return resultado;
     }
 
-    public boolean esAcierto() {
+    @Override
+    public boolean acerto() {
         return acierto;
     }
 
