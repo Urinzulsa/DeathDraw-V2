@@ -1,13 +1,13 @@
 package Modelo;
 
 /**
- * Representa una entrada de highscore (nombre y puntaje).
+ * Representa una entrada de puntuación (nombre y puntaje).
  */
-public class HighscoreEntry implements Comparable<HighscoreEntry> {
+public class EntradaPuntuacion implements Comparable<EntradaPuntuacion> {
     private final String nombre;
     private final int puntaje;
 
-    public HighscoreEntry(String nombre, int puntaje) {
+    public EntradaPuntuacion(String nombre, int puntaje) {
         this.nombre = nombre;
         this.puntaje = puntaje;
     }
@@ -21,7 +21,7 @@ public class HighscoreEntry implements Comparable<HighscoreEntry> {
     }
 
     @Override
-    public int compareTo(HighscoreEntry o) {
+    public int compareTo(EntradaPuntuacion o) {
         // Orden descendente por puntaje
         return Integer.compare(o.puntaje, this.puntaje);
     }

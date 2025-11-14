@@ -383,7 +383,7 @@ public class Partida {
      * @throws CartaNulaException si no hay carta actual
      * @throws IllegalArgumentException si jugador o apuesta son null
      */
-    public ResultadoApuesta procesarApuesta(Jugador jugador, TipoApuesta apuesta) 
+    public ResultadoApuesta procesarApuesta(Jugador jugador, TipoApuesta apuesta)
             throws PartidaNoIniciadaException, CartaNulaException {
         // Validar parámetros
         if (jugador == null || apuesta == null) {
@@ -452,7 +452,7 @@ public class Partida {
      * @param apuesta Tipo de apuesta realizada
      * @return ResultadoApuesta con los datos del acierto
      */
-    private ResultadoApuesta procesarAcierto(Carta carta, Jugador jugador, 
+    private ResultadoApuesta procesarAcierto(Carta carta, Jugador jugador,
                                              Carta cartaAnterior, TipoApuesta apuesta) {
         if (carta.tieneEfecto()) {
             InfoEfecto infoEfecto = manejarEfectoDeCarta(carta, jugador);
@@ -499,7 +499,7 @@ public class Partida {
      * @param apuesta Tipo de apuesta realizada
      * @return ResultadoApuesta con los datos del fallo
      */
-    private ResultadoApuesta procesarFallo(Jugador jugador, Carta cartaAnterior, 
+    private ResultadoApuesta procesarFallo(Jugador jugador, Carta cartaAnterior,
                                            Carta nuevaCarta, TipoApuesta apuesta) {
         if (esModoSolo()) {
             return procesarFalloModoSolo(jugador, cartaAnterior, nuevaCarta, apuesta);
@@ -517,7 +517,7 @@ public class Partida {
      * @param apuesta Tipo de apuesta realizada
      * @return ResultadoApuesta con los datos del fallo en modo SOLO
      */
-    private ResultadoApuesta procesarFalloModoSolo(Jugador jugador, Carta cartaAnterior, 
+    private ResultadoApuesta procesarFalloModoSolo(Jugador jugador, Carta cartaAnterior,
                                                    Carta nuevaCarta, TipoApuesta apuesta) {
         jugador.perderVida();
         this.estado = Estado.FINALIZADO;
@@ -550,7 +550,7 @@ public class Partida {
      * @param apuesta Tipo de apuesta realizada
      * @return ResultadoApuesta con los datos del fallo multijugador
      */
-    private ResultadoApuesta procesarFalloMultijugador(Jugador jugador, Carta cartaAnterior, 
+    private ResultadoApuesta procesarFalloMultijugador(Jugador jugador, Carta cartaAnterior,
                                                        Carta nuevaCarta, TipoApuesta apuesta) {
         boolean hayBala = jugador.getRevolver().girarYDisparar();
         

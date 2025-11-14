@@ -11,62 +11,62 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Gestor simple de highscores para modo SOLO.
+ * Gestor simple de puntuaciones para modo SOLO.
  * <p>
  * Mantiene las top 5 entradas en un archivo JSON simple.
  * Implementa un fallback sencillo sin depender de librerías externas.
  * </p>
  */
-public class HighscoreManager {
+public class GestorPuntuaciones {
     private static final String DEFAULT_FILE = "highscores_solo.json";
     private static final int MAX_ENTRIES = 5;
 
     private final InterfazConsola consola = InterfazConsola.obtenerInstancia();
 
     /**
-     * Intenta actualizar el archivo de highscores con un nuevo puntaje.
+     * Intenta actualizar el archivo de puntuaciones con un nuevo puntaje.
      * Si el puntaje entra en el top-5, guarda y devuelve true.
      * Si no, no modifica el archivo y devuelve false.
      *
      * @param nombre Nombre del jugador
      * @param puntaje Puntaje obtenido
-     * @return true si se obtuvo un nuevo highscore y se guardó
+     * @return true si se obtuvo una nueva puntuación alta y se guardó
      */
-    public boolean actualizarHighscore(String nombre, int puntaje) {
-        return actualizarHighscore(nombre, puntaje, DEFAULT_FILE);
+    public boolean actualizarPuntuacion(String nombre, int puntaje) {
+        return actualizarPuntuacion(nombre, puntaje, DEFAULT_FILE);
     }
 
     /**
      * Versión que recibe ruta de archivo (útil para tests).
      */
-    public boolean actualizarHighscore(String nombre, int puntaje, String rutaArchivo) {
+    public boolean actualizarPuntuacion(String nombre, int puntaje, String rutaArchivo) {
         try {
-            List<HighscoreEntry> oldEntries = cargarDesdeArchivo(rutaArchivo);
+            List<EntradaPuntuacion> oldEntries = cargarDesdeArchivo(rutaArchivo);
 
             // Determinar si el nuevo puntaje califica
-            boolean isHighscore = false;
+            boolean esPuntuacionAlta = false;
             if (oldEntries.size() < MAX_ENTRIES) {
-                isHighscore = true;
+                esPuntuacionAlta = true;
             } else {
                 // Lista ya ordenada de mayor a menor
-                HighscoreEntry last = oldEntries.get(oldEntries.size() - 1);
+                EntradaPuntuacion last = oldEntries.get(oldEntries.size() - 1);
                 if (puntaje > last.getPuntaje()) {
-                    isHighscore = true;
+                    esPuntuacionAlta = true;
                 }
             }
 
-            if (!isHighscore) {
+            if (!esPuntuacionAlta) {
                 return false;
             }
 
             // Añadir, ordenar y recortar a top N
-            oldEntries.add(new HighscoreEntry(nombre, puntaje));
+            oldEntries.add(new EntradaPuntuacion(nombre, puntaje));
             Collections.sort(oldEntries);
-            List<HighscoreEntry> top = oldEntries.subList(0, Math.min(oldEntries.size(), MAX_ENTRIES));
+            List<EntradaPuntuacion> top = oldEntries.subList(0, Math.min(oldEntries.size(), MAX_ENTRIES));
             guardarEnArchivo(top, rutaArchivo);
             return true;
         } catch (IOException e) {
-            consola.mostrarError("Error al leer/escribir highscores: " + e.getMessage());
+            consola.mostrarError("Error al leer/escribir puntuaciones: " + e.getMessage());
             return false;
         }
     }
@@ -74,24 +74,24 @@ public class HighscoreManager {
     /**
      * Devuelve el top N (hasta MAX_ENTRIES) desde el archivo por defecto.
      */
-    public List<HighscoreEntry> obtenerTop() {
+    public List<EntradaPuntuacion> obtenerTop() {
         return obtenerTop(DEFAULT_FILE);
     }
 
     /**
      * Devuelve el top N desde la ruta indicada.
      */
-    public List<HighscoreEntry> obtenerTop(String rutaArchivo) {
+    public List<EntradaPuntuacion> obtenerTop(String rutaArchivo) {
         try {
-            List<HighscoreEntry> all = cargarDesdeArchivo(rutaArchivo);
+            List<EntradaPuntuacion> all = cargarDesdeArchivo(rutaArchivo);
             return all.subList(0, Math.min(all.size(), MAX_ENTRIES));
         } catch (IOException e) {
-            consola.mostrarError("No se pudo leer highscores: " + e.getMessage());
+            consola.mostrarError("No se pudo leer puntuaciones: " + e.getMessage());
             return new ArrayList<>();
         }
     }
 
-    private List<HighscoreEntry> cargarDesdeArchivo(String rutaArchivo) throws IOException {
+    private List<EntradaPuntuacion> cargarDesdeArchivo(String rutaArchivo) throws IOException {
         Path path = Path.of(rutaArchivo);
         if (!Files.exists(path)) {
             // Archivo no existe -> retornar vacío
@@ -103,7 +103,7 @@ public class HighscoreManager {
             return new ArrayList<>();
         }
 
-        List<HighscoreEntry> list = new ArrayList<>();
+        List<EntradaPuntuacion> list = new ArrayList<>();
         try {
             String body = contenido;
             if (body.startsWith("[") && body.endsWith("]")) {
@@ -122,11 +122,11 @@ public class HighscoreManager {
                 String nombre = extraerValorString(o, "nombre");
                 int puntaje = extraerValorInt(o, "puntaje");
                 if (nombre != null) {
-                    list.add(new HighscoreEntry(nombre, puntaje));
+                    list.add(new EntradaPuntuacion(nombre, puntaje));
                 }
             }
 
-                } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
+        } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
             // Si falla el parseo, devolver lista vacía para no romper el flujo
             return new ArrayList<>();
         }
@@ -135,11 +135,11 @@ public class HighscoreManager {
         return list;
     }
 
-    private void guardarEnArchivo(List<HighscoreEntry> entries, String rutaArchivo) throws IOException {
+    private void guardarEnArchivo(List<EntradaPuntuacion> entries, String rutaArchivo) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         boolean first = true;
-        for (HighscoreEntry e : entries) {
+        for (EntradaPuntuacion e : entries) {
             if (!first) sb.append(",");
             first = false;
             sb.append("{\"nombre\":\"").append(escape(e.getNombre())).append("\",\"puntaje\":").append(e.getPuntaje()).append("}");
@@ -161,7 +161,7 @@ public class HighscoreManager {
         if (colon == -1) return null;
         int startQuote = json.indexOf('"', colon + 1);
         if (startQuote == -1) return null;
-                int endQuote = -1;
+        int endQuote = -1;
         int i = startQuote + 1;
         while (i < json.length()) {
             if (json.charAt(i) == '"') {

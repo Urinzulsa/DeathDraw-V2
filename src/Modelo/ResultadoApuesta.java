@@ -14,46 +14,46 @@ import Carta.Carta;
  * @version 2.0
  */
 public class ResultadoApuesta {
-    
+
     /** Indica si la apuesta fue acertada */
     private final boolean acerto;
-    
+
     /** Indica si hubo impacto del revólver (solo para fallos) */
     private final boolean huboImpacto;
-    
+
     /** Vidas restantes del jugador tras el resultado */
     private final int vidasRestantes;
-    
+
     /** Nombre del jugador que apostó */
     private final String nombreJugador;
-    
+
     /** Carta actual antes de la apuesta */
     private final Carta cartaAnterior;
-    
+
     /** Nueva carta robada */
     private final Carta nuevaCarta;
-    
+
     /** Tipo de apuesta realizada */
     private final String tipoApuesta;
-    
+
     /** Indica si el jugador tiene efecto especial */
     private final boolean tieneEfecto;
-    
+
     /** Tipo de efecto especial (null si no tiene) */
     private final String tipoEfecto;
-    
+
     /** Descripción del efecto especial (null si no tiene) */
     private final String descripcionEfecto;
-    
+
     /** Resultado del efecto especial (null si no tiene) */
     private final String resultadoEfecto;
-    
+
     /** Indica si es modo SOLO (afecta mensajes) */
     private final boolean esModoSolo;
-    
+
     /**
      * Constructor completo para resultado con efecto especial.
-     * 
+     *
      * @param acerto Si acertó la apuesta
      * @param huboImpacto Si hubo impacto del revólver
      * @param vidasRestantes Vidas restantes del jugador
@@ -66,7 +66,7 @@ public class ResultadoApuesta {
      * @param resultadoEfecto Resultado del efecto
      * @param esModoSolo Si es modo SOLO
      */
-    public ResultadoApuesta(boolean acerto, boolean huboImpacto, int vidasRestantes, 
+    public ResultadoApuesta(boolean acerto, boolean huboImpacto, int vidasRestantes,
                            String nombreJugador, Carta cartaAnterior, Carta nuevaCarta,
                            String tipoApuesta, String tipoEfecto, String descripcionEfecto,
                            String resultadoEfecto, boolean esModoSolo) {
@@ -86,7 +86,7 @@ public class ResultadoApuesta {
     
     /**
      * Constructor para resultado sin efecto especial.
-     * 
+     *
      * @param acerto Si acertó la apuesta
      * @param huboImpacto Si hubo impacto del revólver
      * @param vidasRestantes Vidas restantes del jugador
@@ -96,10 +96,10 @@ public class ResultadoApuesta {
      * @param tipoApuesta Tipo de apuesta ("MAYOR" o "MENOR")
      * @param esModoSolo Si es modo SOLO
      */
-    public ResultadoApuesta(boolean acerto, boolean huboImpacto, int vidasRestantes, 
+    public ResultadoApuesta(boolean acerto, boolean huboImpacto, int vidasRestantes,
                            String nombreJugador, Carta cartaAnterior, Carta nuevaCarta,
                            String tipoApuesta, boolean esModoSolo) {
-        this(acerto, huboImpacto, vidasRestantes, nombreJugador, cartaAnterior, 
+        this(acerto, huboImpacto, vidasRestantes, nombreJugador, cartaAnterior,
              nuevaCarta, tipoApuesta, null, null, null, esModoSolo);
     }
     

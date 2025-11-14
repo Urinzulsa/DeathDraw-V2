@@ -1,7 +1,7 @@
 import Exceptions.CartaNulaException;
 import Exceptions.PartidaNoIniciadaException;
 import Jugador.Jugador;
-import Modelo.HighscoreManager;
+import Modelo.GestorPuntuaciones;
 import Modelo.ResultadoApuesta;
 import Vista.InterfazConsola;
 import Vista.MenuPrincipal;
@@ -102,24 +102,24 @@ public class ControladorJuego {
     }
 
     private void gestionarHighscore(String nombre, int puntaje) {
-        HighscoreManager hsManager = new HighscoreManager();
-        boolean nuevo = hsManager.actualizarHighscore(nombre, puntaje);
+        GestorPuntuaciones gestorPuntuaciones = new GestorPuntuaciones();
+        boolean nuevo = gestorPuntuaciones.actualizarPuntuacion(nombre, puntaje);
         if (nuevo) {
-            consola.mostrarExito("¡Felicidades! Has conseguido un nuevo HIGH SCORE en modo SOLO: " + puntaje);
+            consola.mostrarExito("¡Felicidades! Has conseguido una nueva PUNTUACIÓN ALTA en modo SOLO: " + puntaje);
         } else {
-            consola.mostrarMensaje("No alcanzaste el Highscore. Intenta de nuevo para entrar en el top 5.");
+            consola.mostrarMensaje("No alcanzaste una puntuación alta. Intenta de nuevo para entrar en el top 5.");
         }
-        mostrarTablaHighscore(hsManager);
+        mostrarTablaPuntuaciones(gestorPuntuaciones);
     }
 
-    public void mostrarTablaHighscore(HighscoreManager hsManager) {
-        java.util.List<Modelo.HighscoreEntry> top = hsManager.obtenerTop();
+    public void mostrarTablaPuntuaciones(GestorPuntuaciones gestorPuntuaciones) {
+        java.util.List<Modelo.EntradaPuntuacion> top = gestorPuntuaciones.obtenerTop();
         StringBuilder tabla = new StringBuilder();
         tabla.append(String.format("%3s | %-20s | %s\n", "#", "NOMBRE", "PUNTAJE"));
         tabla.append("-----------------------------------------\n");
         for (int i = 0; i < 5; i++) {
             if (i < top.size()) {
-                Modelo.HighscoreEntry e = top.get(i);
+                Modelo.EntradaPuntuacion e = top.get(i);
                 tabla.append(String.format("%3d | %-20s | %d\n", i + 1, e.getNombre(), e.getPuntaje()));
             } else {
                 tabla.append(String.format("%3d | %-20s | %s\n", i + 1, "---", "-"));

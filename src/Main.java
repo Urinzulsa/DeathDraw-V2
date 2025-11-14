@@ -6,7 +6,7 @@ import Vista.InterfazConsola;
 import Vista.MenuPrincipal;
 import Vista.VistaJuego;
 import Modelo.ResultadoApuesta;
-import Modelo.HighscoreManager;
+import Modelo.GestorPuntuaciones;
 
 /**
  * Clase principal del juego DeathDraw.
@@ -48,7 +48,7 @@ public class Main {
         // Mostrar bienvenida
         menu.mostrarBienvenida();
 
-        HighscoreManager hsManagerGlobal = new HighscoreManager();
+        GestorPuntuaciones gestorPuntuacionesGlobal = new GestorPuntuaciones();
 
         while (true) {
             // Seleccionar modo de juego
@@ -57,7 +57,7 @@ public class Main {
             if ("VER_TOP".equalsIgnoreCase(modoSeleccionadoStr)) {
                 // Mostrar top 5 y volver al menú
                 // Usamos un controlador temporal para mostrar la tabla y mantener el código DRY
-                new ControladorJuego(null, null).mostrarTablaHighscore(hsManagerGlobal);
+                new ControladorJuego(null, null).mostrarTablaPuntuaciones(gestorPuntuacionesGlobal);
                 consola.esperarEnter();
                 continue; // volver a mostrar el menú
             }
