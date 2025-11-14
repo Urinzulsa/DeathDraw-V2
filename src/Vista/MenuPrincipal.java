@@ -60,22 +60,25 @@ public class MenuPrincipal {
     public String seleccionarModo() {
         consola.mostrarMensaje("Selecciona el modo de juego:");
         consola.mostrarMensaje("");
-        
+
         mostrarOpcionModo(1, "MODO CLÁSICO", 3, 1, 15);
         mostrarOpcionModo(2, "MODO SOBRECARGA", 5, 2, 20);
         mostrarOpcionModo(3, "MODO MUERTE SÚBITA", 1, 6, 5);
         mostrarOpcionModoSolo(4, "MODO SOLO", 1, 1);
-        
-        int opcion = consola.solicitarNumero("Ingresa tu elección (1-4): ", 1, 4);
-        
+        consola.mostrarMensaje("5.  VER TOP 5 (SOLO)");
+        consola.mostrarMensaje("");
+
+        int opcion = consola.solicitarNumero("Ingresa tu elección (1-5): ", 1, 5);
+
         String modoSeleccionado = switch (opcion) {
             case 1 -> "CLASICO";
             case 2 -> "SOBRECARGA";
             case 3 -> "MUERTE_SUBITA";
             case 4 -> "SOLO";
+            case 5 -> "VER_TOP";
             default -> "CLASICO";
         };
-        
+
         consola.mostrarMensaje("\nModo seleccionado: " + modoSeleccionado);
         return modoSeleccionado;
     }

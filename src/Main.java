@@ -6,6 +6,7 @@ import Vista.InterfazConsola;
 import Vista.MenuPrincipal;
 import Vista.VistaJuego;
 import Modelo.ResultadoApuesta;
+import Modelo.HighscoreManager;
 
 /**
  * Clase principal del juego DeathDraw.
@@ -52,45 +53,70 @@ public class Main {
         // Mostrar bienvenida
         menu.mostrarBienvenida();
 
-        // Seleccionar modo de juego
-        String modoSeleccionadoStr = menu.seleccionarModo();
-        ModoJuego modoSeleccionado;
+        HighscoreManager hsManagerGlobal = new HighscoreManager();
 
-        try {
-            modoSeleccionado = ModoJuego.fromString(modoSeleccionadoStr);
-        } catch (IllegalArgumentException e) {
-            menu.mostrarError("Error: " + e.getMessage());
-            consola.cerrar();
-            return;
-        }
+        while (true) {
+            // Seleccionar modo de juego
+            String modoSeleccionadoStr = menu.seleccionarModo();
 
-        Partida partida = new Partida(modoSeleccionado);
-
-        // Registrar jugadores
-        String[] nombresJugadores = new String[0];
-        boolean ingresado = false;
-        while (!ingresado) {
-            try {
-                nombresJugadores = menu.solicitarNombresJugadores(
-                        modoSeleccionado.equals(ModoJuego.SOLO));
-                ingresado = true;
-            } catch (NombreInvalidoException e) {
-                System.out.println("ERROR: " + e.getMessage());
-                System.out.println("Por favor inténtelo nuevamente.");
+            if ("VER_TOP".equalsIgnoreCase(modoSeleccionadoStr)) {
+                // Mostrar top 5 y volver al menú
+                java.util.List<Modelo.HighscoreEntry> top = hsManagerGlobal.obtenerTop();
+                StringBuilder tabla = new StringBuilder();
+                tabla.append(String.format("%3s | %-20s | %s\n", "#", "NOMBRE", "PUNTAJE"));
+                tabla.append("-----------------------------------------\n");
+                for (int i = 0; i < 5; i++) {
+                    if (i < top.size()) {
+                        Modelo.HighscoreEntry e = top.get(i);
+                        tabla.append(String.format("%3d | %-20s | %d\n", i + 1, e.getNombre(), e.getPuntaje()));
+                    } else {
+                        tabla.append(String.format("%3d | %-20s | %s\n", i + 1, "---", "-"));
+                    }
+                }
+                consola.mostrarCaja(tabla.toString());
+                consola.esperarEnter();
+                continue; // volver a mostrar el menú
             }
-        }
-        if (!agregarJugadoresAPartida(partida, nombresJugadores, modoSeleccionado)) {
-            consola.cerrar();
-            return; // Error al agregar jugadores
-        }
 
-        // Iniciar y jugar partida
-        try {
-            String resultado = partida.iniciarPartida();
-            menu.mostrarInicioPartida(resultado);
-            jugarPartida(partida, modoSeleccionado);
-        } catch (Exception e) {
-            menu.mostrarError("Error al iniciar la partida: " + e.getMessage());
+            ModoJuego modoSeleccionado;
+            try {
+                modoSeleccionado = ModoJuego.fromString(modoSeleccionadoStr);
+            } catch (IllegalArgumentException e) {
+                menu.mostrarError("Error: " + e.getMessage());
+                consola.cerrar();
+                return;
+            }
+
+            Partida partida = new Partida(modoSeleccionado);
+
+            // Registrar jugadores
+            String[] nombresJugadores = new String[0];
+            boolean ingresado = false;
+            while (!ingresado) {
+                try {
+                    nombresJugadores = menu.solicitarNombresJugadores(
+                            modoSeleccionado.equals(ModoJuego.SOLO));
+                    ingresado = true;
+                } catch (NombreInvalidoException e) {
+                    System.out.println("ERROR: " + e.getMessage());
+                    System.out.println("Por favor inténtelo nuevamente.");
+                }
+            }
+            if (!agregarJugadoresAPartida(partida, nombresJugadores, modoSeleccionado)) {
+                consola.cerrar();
+                return; // Error al agregar jugadores
+            }
+
+            // Iniciar y jugar partida
+            try {
+                String resultado = partida.iniciarPartida();
+                menu.mostrarInicioPartida(resultado);
+                jugarPartida(partida, modoSeleccionado);
+            } catch (Exception e) {
+                menu.mostrarError("Error al iniciar la partida: " + e.getMessage());
+            }
+
+            break; // Tras jugar una partida salimos del loop principal y cerramos
         }
 
         // Cerrar recursos
@@ -272,6 +298,29 @@ public class Main {
         // Mostrar resultado final
         vista.mostrarFinSolo(racha);
 
+        // ====== Highscore: actualizar top5 para modo SOLO ======
+        HighscoreManager hsManager = new HighscoreManager();
+        boolean nuevo = hsManager.actualizarHighscore(jugador1.getNombre(), racha);
+        if (nuevo) {
+            consola.mostrarExito("¡Felicidades! Has conseguido un nuevo HIGH SCORE en modo SOLO: " + racha);
+        } else {
+            consola.mostrarMensaje("No alcanzaste el Highscore. Intenta de nuevo para entrar en el top 5.");
+        }
+
+        // Mostrar tabla del top 5 (nombre - puntaje)
+        StringBuilder tabla = new StringBuilder();
+        tabla.append(String.format("%3s | %-20s | %s\n", "#", "NOMBRE", "PUNTAJE"));
+        tabla.append("-----------------------------------------\n");
+        java.util.List<Modelo.HighscoreEntry> top = hsManager.obtenerTop();
+        for (int i = 0; i < 5; i++) {
+            if (i < top.size()) {
+                Modelo.HighscoreEntry e = top.get(i);
+                tabla.append(String.format("%3d | %-20s | %d\n", i + 1, e.getNombre(), e.getPuntaje()));
+            } else {
+                tabla.append(String.format("%3d | %-20s | %s\n", i + 1, "---", "-"));
+            }
+        }
+        consola.mostrarCaja(tabla.toString());
+
     }
 }
-
