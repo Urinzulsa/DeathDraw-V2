@@ -22,17 +22,6 @@ public enum TipoApuesta {
     public String getNombre() {
         return nombre;
     }
-
-    
-    public String getSimbolo() {
-        return simbolo;
-    }
-
-    
-    public String getDescripcion() {
-        return simbolo + " " + nombre;
-    }
-    
     
     public static TipoApuesta fromString(String nombre) {
         if (nombre == null || nombre.trim().isEmpty()) {

@@ -13,14 +13,6 @@ public class ResultadoMoneda implements Acerto {
         this.acierto = acierto;
     }
 
-    public Lado getEleccion() {
-        return eleccion;
-    }
-
-    public Lado getResultado() {
-        return resultado;
-    }
-
     @Override
     public boolean acerto() {
         return acierto;

@@ -34,25 +34,6 @@ public class Mazo implements IMazo {
         usadas.add(cartaRobada);
         return cartaRobada;
     }
-
-    public void mezclar() {
-        java.util.Collections.shuffle(cartas);
-    }
-
-    public List<Carta> verProximasCartas(int n) {
-        return cartas.subList(0, Math.min(n, cartas.size()));
-    }
-
-    // Método para crear un mazo estándar con distribución fija de efectos (15% por defecto)
-    public static Mazo crearMazoEstandar() {
-        return crearMazoEstandar(0.15, true);
-    }
-
-    // Método para crear un mazo estándar con probabilidad configurable de efectos especiales
-    public static Mazo crearMazoEstandar(double probabilidadEspeciales) {
-        return crearMazoEstandar(probabilidadEspeciales, true);
-    }
-
     
     public static Mazo crearMazoEstandar(double probabilidadEspeciales, boolean esModo2v2) {
         List<Carta> mazoCompleto = new java.util.ArrayList<>();

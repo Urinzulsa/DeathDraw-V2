@@ -135,12 +135,6 @@ public class InterfazConsola {
         System.out.println(EMOJI_ERROR + " " + mensaje);
     }
     
-    
-    public void mostrarAdvertencia(String mensaje) {
-        System.out.println("⚠️  " + mensaje);
-    }
-    
-    
     public void mostrarTitulo(String titulo) {
         System.out.println("\n" + SEPARADOR_PRINCIPAL);
         System.out.println(centrarTexto(titulo, ANCHO_SEPARADOR));
@@ -166,12 +160,6 @@ public class InterfazConsola {
         System.out.println("└" + SEPARADOR_SECCION + "┘");
     }
     
-    
-    public void mostrarSeparador() {
-        System.out.println(SEPARADOR_PRINCIPAL);
-    }
-    
-    
     public void limpiarPantalla() {
         for (int i = 0; i < 2; i++) {
             System.out.println();
@@ -185,29 +173,13 @@ public class InterfazConsola {
         int espacios = (ancho - texto.length()) / 2;
         return " ".repeat(Math.max(0, espacios)) + texto;
     }
-    
-    
+
     private String ajustarLinea(String linea, int ancho) {
         if (linea.length() > ancho) {
             return linea.substring(0, ancho);
         }
         return String.format("%-" + ancho + "s", linea);
     }
-    
-    
-    public String formatearMensaje(String tipo, String mensaje) {
-        String emoji = switch (tipo.toLowerCase()) {
-            case "acierto" -> EMOJI_ACIERTO;
-            case "error" -> EMOJI_ERROR;
-            case "impacto" -> EMOJI_IMPACTO;
-            case "suerte" -> EMOJI_SUERTE;
-            case "estrella" -> EMOJI_ESTRELLA;
-            default -> "";
-        };
-        
-        return emoji.isEmpty() ? mensaje : emoji + " " + mensaje;
-    }
-    
     
     public void cerrar() {
         scanner.close();

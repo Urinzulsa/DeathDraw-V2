@@ -9,10 +9,6 @@ public class Revolver implements IRevolver {
     
     private static final int CAPACIDAD_RECAMARA = 6;
     
-    
-    private static final int INDICE_PRIMERA_RECAMARA = 0;
-    
-    
     private static final Random RANDOM = new Random();
     
     // ================ ATRIBUTOS ================
@@ -86,11 +82,6 @@ public class Revolver implements IRevolver {
         Arrays.fill(recamara, false);
     }
 
-    
-    public void llenarRevolver() {
-        Arrays.fill(recamara, true);
-    }
-
     // ================ MÉTODOS DE CONSULTA ================
     
     
@@ -103,55 +94,14 @@ public class Revolver implements IRevolver {
         }
         return count;
     }
-
-    
-    public int getCapacidad() {
-        return CAPACIDAD_RECAMARA;
-    }
-
-    
-    public boolean estaVacio() {
-        return contarBalas() == 0;
-    }
-
-    
-    public boolean estaLleno() {
-        return contarBalas() == CAPACIDAD_RECAMARA;
-    }
-
     
     public double getProbabilidadImpacto() {
         return (contarBalas() * 100.0) / CAPACIDAD_RECAMARA;
     }
 
     // ================ MÉTODOS DE UTILIDAD ================
-    
-    
-    public void mostrarRecamara() {
-        for (boolean bala : recamara) {
-            System.out.print(bala ? "💣 " : "⬜ ");
-        }
-        System.out.println();
-    }
-
-    
     @Override
     public String toString() {
         return String.format("Revólver [%d/%d balas]", contarBalas(), CAPACIDAD_RECAMARA);
-    }
-
-    
-    public String toStringDetallado() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Revólver: %d/%d balas (%.1f%% probabilidad)\n",
-            contarBalas(), CAPACIDAD_RECAMARA, getProbabilidadImpacto()));
-        sb.append("Recámaras: ");
-        for (int i = 0; i < recamara.length; i++) {
-            sb.append(recamara[i] ? "💣" : "⬜");
-            if (i < recamara.length - 1) {
-                sb.append(" ");
-            }
-        }
-        return sb.toString();
     }
 }

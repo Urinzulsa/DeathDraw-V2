@@ -2,17 +2,6 @@ package Modelo;
 
 import Carta.Carta;
 
-/**
- * Clase que encapsula el resultado completo de una apuesta.
- * <p>
- * Este DTO (Data Transfer Object) permite separar la lógica de negocio
- * de la presentación al retornar información estructurada en lugar de
- * imprimir directamente en consola.
- * </p>
- * 
- * @author DeathDraw-V2
- * @version 2.0
- */
 public class ResultadoApuesta {
 
     

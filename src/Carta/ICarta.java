@@ -10,16 +10,6 @@ public interface ICarta {
     
     boolean esMenorQue(Carta otraCarta);
     
-    
-    boolean esIgualQue(Carta otraCarta);
-    
-    
-    int getValor();
-    
-    
-    Palo getPalo();
-    
-    
     EfectoEspecial getEfecto();
     
     

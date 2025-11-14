@@ -9,14 +9,10 @@ import Modelo.ResultadoApuesta;
 import Modelo.GestorPuntuaciones;
 
 public class Main {
-
-    
     private static MenuPrincipal menu;
 
-    
     private static InterfazConsola consola;
 
-    
     public static void main(String[] args) {
         // Inicializar vistas
         inicializarVistas();

@@ -82,26 +82,19 @@ public class Jugador implements IJugador {
     public int getVidas() {
         return vidas;
     }
-
-    
-    public int getVidasMaximas() {
-        return vidasMaximas;
-    }
-
     
     public Revolver getRevolver() {
         return revolver;
     }
 
     // ================ SETTERS ================
-    
-    
+
+
     public void setRevolver(Revolver nuevoRevolver) {
         validarRevolver(nuevoRevolver);
         this.revolver = nuevoRevolver;
     }
 
-    
     public void setVidas(int vidas) {
         if (vidas < VIDAS_MINIMAS) {
             throw new VidasInvalidasException("Las vidas no pueden ser negativas");
@@ -130,27 +123,10 @@ public class Jugador implements IJugador {
         }
     }
 
-    
-    public boolean estaVivo() {
-        return vidas > VIDAS_MINIMAS;
-    }
-
-    
-    public boolean tieneVidasMaximas() {
-        return vidas == vidasMaximas;
-    }
-
     // ================ MÉTODOS DE OBJECT ================
-    
-    
+
     @Override
     public String toString() {
         return "Jugador: " + nombre;
-    }
-
-    
-    public String toStringDetallado() {
-        return String.format("Jugador: %s | Vidas: %d/%d | Balas: %d",
-            nombre, vidas, vidasMaximas, revolver.contarBalas());
     }
 }
