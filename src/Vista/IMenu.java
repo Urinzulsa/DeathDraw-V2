@@ -22,4 +22,7 @@ public interface IMenu {
     
     
     void mostrarError(String mensaje);
+    
+    
+    boolean preguntarJugarDeNuevo();
 }

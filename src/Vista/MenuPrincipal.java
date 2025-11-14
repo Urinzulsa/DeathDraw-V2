@@ -32,9 +32,10 @@ public class MenuPrincipal implements IMenu {
         mostrarOpcionModo(3, "MODO MUERTE SÚBITA", 1, 6, 5);
         mostrarOpcionModoSolo(4, "MODO SOLO", 1, 1);
         consola.mostrarMensaje("5.  VER TOP 5 (SOLO)");
+        consola.mostrarMensaje("6.  SALIR DEL JUEGO");
         consola.mostrarMensaje("");
 
-        int opcion = consola.solicitarNumero("Ingresa tu elección (1-5): ", 1, 5);
+        int opcion = consola.solicitarNumero("Ingresa tu elección (1-6): ", 1, 6);
 
         String modoSeleccionado = switch (opcion) {
             case 1 -> "CLASICO";
@@ -42,10 +43,13 @@ public class MenuPrincipal implements IMenu {
             case 3 -> "MUERTE_SUBITA";
             case 4 -> "SOLO";
             case 5 -> "VER_TOP";
+            case 6 -> "SALIR";
             default -> "CLASICO";
         };
 
-        consola.mostrarMensaje("\nModo seleccionado: " + modoSeleccionado);
+        if (!"SALIR".equals(modoSeleccionado)) {
+            consola.mostrarMensaje("\nModo seleccionado: " + modoSeleccionado);
+        }
         return modoSeleccionado;
     }
     
@@ -127,5 +131,28 @@ public class MenuPrincipal implements IMenu {
     @Override
     public void mostrarError(String mensaje) {
         consola.mostrarError(mensaje);
+    }
+    
+    // ================ MENÚ POST-PARTIDA ================
+    
+    
+    @Override
+    public boolean preguntarJugarDeNuevo() {
+        consola.mostrarMensaje("\n" + InterfazConsola.SEPARADOR_SECUNDARIO);
+        consola.mostrarMensaje("¿Qué deseas hacer?");
+        consola.mostrarMensaje("1. Jugar de nuevo (mismo modo)");
+        consola.mostrarMensaje("2. Volver al menú principal");
+        consola.mostrarMensaje("3. Salir del juego");
+        consola.mostrarMensaje(InterfazConsola.SEPARADOR_SECUNDARIO);
+        
+        int opcion = consola.solicitarNumero("Ingresa tu elección (1-3): ", 1, 3);
+        
+        if (opcion == 3) {
+            consola.mostrarMensaje("\n¡Gracias por jugar a DEATH DRAW! ¡Hasta la próxima!");
+            consola.cerrar();
+            System.exit(0);
+        }
+        
+        return opcion == 1; // true = jugar de nuevo, false = volver al menú
     }
 }

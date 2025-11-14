@@ -25,10 +25,20 @@ public class Main {
         menu.mostrarBienvenida();
 
         GestorPuntuaciones gestorPuntuacionesGlobal = new GestorPuntuaciones();
-
-        while (true) {
+        
+        // Bucle principal del menú
+        boolean continuarJugando = true;
+        
+        while (continuarJugando) {
             // Seleccionar modo de juego
             String modoSeleccionadoStr = menu.seleccionarModo();
+
+            // Opción para salir del juego
+            if ("SALIR".equalsIgnoreCase(modoSeleccionadoStr)) {
+                consola.mostrarMensaje("\n¡Gracias por jugar a DEATH DRAW! ¡Hasta la próxima!");
+                continuarJugando = false;
+                break;
+            }
 
             if ("VER_TOP".equalsIgnoreCase(modoSeleccionadoStr)) {
                 // Mostrar top 5 y volver al menú
@@ -43,32 +53,36 @@ public class Main {
                 modoSeleccionado = ModoJuego.fromString(modoSeleccionadoStr);
             } catch (IllegalArgumentException e) {
                 menu.mostrarError("Error: " + e.getMessage());
-                consola.cerrar();
-                return;
+                continue; // Volver al menú en vez de salir
             }
 
-            Partida partida = new Partida(modoSeleccionado);
+            // Bucle para jugar el mismo modo múltiples veces
+            boolean jugarMismoModo = true;
+            
+            while (jugarMismoModo) {
+                Partida partida = new Partida(modoSeleccionado);
 
-            // Registrar jugadores
-            if (!registrarJugadores(partida, modoSeleccionado)) {
-                consola.cerrar();
-                return; // Salir si hay error
+                // Registrar jugadores
+                if (!registrarJugadores(partida, modoSeleccionado)) {
+                    break; // Salir del bucle del modo si hay error
+                }
+
+                // Iniciar y jugar partida
+                try {
+                    String resultado = partida.iniciarPartida();
+                    menu.mostrarInicioPartida(resultado);
+
+                    // El controlador se encarga de la partida
+                    ControladorJuego controlador = new ControladorJuego(partida, modoSeleccionado);
+                    controlador.jugar();
+
+                } catch (Exception e) {
+                    menu.mostrarError("Error durante la partida: " + e.getMessage());
+                }
+                
+                // Preguntar si quiere jugar de nuevo o volver al menú
+                jugarMismoModo = menu.preguntarJugarDeNuevo();
             }
-
-            // Iniciar y jugar partida
-            try {
-                String resultado = partida.iniciarPartida();
-                menu.mostrarInicioPartida(resultado);
-
-                // El controlador se encarga de la partida
-                ControladorJuego controlador = new ControladorJuego(partida, modoSeleccionado);
-                controlador.jugar();
-
-            } catch (Exception e) {
-                menu.mostrarError("Error durante la partida: " + e.getMessage());
-            }
-
-            break; // Tras jugar una partida salimos del loop principal y cerramos
         }
 
         // Cerrar recursos
