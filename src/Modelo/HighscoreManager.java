@@ -126,7 +126,7 @@ public class HighscoreManager {
                 }
             }
 
-        } catch (Exception e) {
+                } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
             // Si falla el parseo, devolver lista vacía para no romper el flujo
             return new ArrayList<>();
         }
@@ -161,7 +161,24 @@ public class HighscoreManager {
         if (colon == -1) return null;
         int startQuote = json.indexOf('"', colon + 1);
         if (startQuote == -1) return null;
-        int endQuote = json.indexOf('"', startQuote + 1);
+                int endQuote = -1;
+        int i = startQuote + 1;
+        while (i < json.length()) {
+            if (json.charAt(i) == '"') {
+                // Count preceding backslashes
+                int backslashCount = 0;
+                int j = i - 1;
+                while (j >= startQuote + 1 && json.charAt(j) == '\\') {
+                    backslashCount++;
+                    j--;
+                }
+                if (backslashCount % 2 == 0) {
+                    endQuote = i;
+                    break;
+                }
+            }
+            i++;
+        }
         if (endQuote == -1) return null;
         return json.substring(startQuote + 1, endQuote);
     }
