@@ -15,11 +15,6 @@ public class Mazo implements IMazo {
         this.usadas = new java.util.ArrayList<>();
     }
 
-    public Mazo() {
-        this.cartas = new java.util.ArrayList<>();
-        this.usadas = new java.util.ArrayList<>();
-    }
-
     public Carta robarCarta() {
 
         if (cartas.isEmpty()) {
